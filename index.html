@@ -1,25 +1,25 @@
 <style>
-/* --- 전체 스타일 (디스코드 다크 테마) --- */
+/* --- 전체 스타일 (디스코드 다크 테마 유지) --- */
 body {
-    font-family: 'Noto Sans KR', sans-serif; /* 한국어 폰트 설정 (웹 폰트가 없다면 기본 폰트) */
+    font-family: 'Noto Sans KR', sans-serif;
     text-align: center;
     padding: 50px 20px;
-    background-color: #2C2F33; /* 디스코드 배경색 (Dark, Duller Gray) */
-    color: #DCDDDE; /* 밝은 폰트 색상 */
+    background-color: #2C2F33; 
+    color: #DCDDDE; 
     margin: 0;
 }
 
 /* --- 제목 스타일 --- */
 .title {
     font-size: 2.5em;
-    color: #FFFFFF; /* 흰색으로 강조 */
+    color: #FFFFFF; 
     margin-bottom: 5px;
     font-weight: 700;
 }
 
 .subtitle {
     font-size: 1.1em;
-    color: #B9BBBE; /* 서브 텍스트는 약간 연하게 */
+    color: #B9BBBE; 
     margin-bottom: 40px;
 }
 
@@ -29,49 +29,50 @@ body {
     margin: 0 auto;
     text-align: left;
     padding: 30px;
-    background-color: #36393F; /* 패널 배경색 (Dark, but lighter than body) */
-    border-radius: 8px; /* 둥근 모서리 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* 부드러운 그림자 */
+    background-color: #36393F; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
 }
 
 .container h2 {
-    color: #7289DA; /* 디스코드 블루로 섹션 제목 강조 */
+    color: #7289DA; 
     border-bottom: 2px solid #4F545C;
     padding-bottom: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* 간격 축소 */
 }
 
-/* --- 개별 홍보물 스타일 --- */
+/* --- 개별 홍보물 스타일 (간결하게 수정) --- */
 .promo-item {
-    background-color: #2F3136; /* 개별 아이템 배경색 */
-    padding: 20px;
-    margin-bottom: 20px;
+    background-color: #2F3136; 
+    padding: 15px; /* 패딩 축소 */
+    margin-bottom: 15px; /* 간격 축소 */
     border-radius: 6px;
-    border-left: 4px solid #43B581; /* 디스코드 녹색(Teal) 라인으로 강조 */
+    border-left: 4px solid #43B581; 
     transition: background-color 0.2s;
 }
 
 .promo-item:hover {
-    background-color: #393C41; /* 마우스 오버 시 약간 밝아짐 */
+    background-color: #393C41; 
 }
 
 .promo-item h3 {
     margin-top: 0;
     color: #FFFFFF;
-    font-size: 1.3em;
-    margin-bottom: 10px;
+    font-size: 1.2em; /* 폰트 크기 약간 축소 */
+    margin-bottom: 5px; /* 간격 축소 */
 }
 
 .promo-item p {
-    color: #DCDDDE;
-    line-height: 1.5;
+    color: #B9BBBE; /* 본문 색상을 약간 연하게 */
+    font-size: 0.95em;
+    margin-bottom: 8px; /* 문단 간격 축소 */
 }
 
 /* --- 경고/링크 스타일 --- */
 .warning {
-    color: #F04747; /* 경고는 빨간색 */
+    color: #F04747; 
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 5px; /* 간격 축소 */
 }
 
 .promo-item a {
@@ -79,15 +80,15 @@ body {
     color: #FFFFFF;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 15px;
-    background-color: #7289DA; /* 디스코드 블루 버튼 색상 */
-    padding: 10px 18px;
+    margin-top: 10px; /* 간격 축소 */
+    background-color: #7289DA; 
+    padding: 8px 15px; /* 버튼 크기 약간 축소 */
     border-radius: 4px;
     transition: background-color 0.2s;
 }
 
 .promo-item a:hover {
-    background-color: #677BC4; /* 마우스 오버 시 약간 어두워짐 */
+    background-color: #677BC4; 
 }
 </style>
 <body>
@@ -98,13 +99,21 @@ body {
         <h2>금주의 추천 홍보물</h2>
         
         <div class="promo-item">
-            <h3>🚗 차량 판매중! (분노의 질주 차량 등)</h3>
-            <p>🥳분노의 질주 차량 출시하였습니다‼️</p>
-            <p>⭐️아반떼N 등 국산차량들, 다양한 VIP 세단 차량들 보유! 약 80대의 데칼 차량과 5,000₩-20,000₩ 사이의 다양한 차량들이 있습니다.</p>
-            <p class="warning">❌카팍머니, 차교 안 받습니다❌</p>
+            <h3>🚗 차량 판매중! (분노의 질주 등)</h3>
+            <p>⭐️아반떼N 등 국산차량, VIP 세단, 약 80대의 데칼 차량 판매. (5,000₩~20,000₩)</p>
+            <p class="warning">주의: 카팍머니, 차교는 받지 않습니다.</p>
 
             <a href="https://open.kakao.com/me/ONCOMPANY" target="_blank">
                 𝑶𝑱컴퍼니 전시샵 바로가기
+            </a>
+        </div>
+        
+        <div class="promo-item">
+            <h3>🔥 카마로 로고작 출시!</h3>
+            <p>새로운 카마로 로고 디자인을 확인하세요. 자세한 내용은 오픈 채팅방에서 안내해 드립니다.</p>
+
+            <a href="https://open.kakao.com/o/spy1vNAh" target="_blank">
+                문의/상담 오픈 채팅방 바로가기
             </a>
         </div>
         
