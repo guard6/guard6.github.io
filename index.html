@@ -119,26 +119,29 @@
             font-size: 0.95em;
         }
         
-        /* 옵션 및 액션 그룹 (수정) */
+        /* 옵션 및 액션 그룹 */
         .product-options-actions {
             display: flex;
-            align-items: center; /* 수직 중앙 정렬 */
+            align-items: center; 
             gap: 10px;
             max-width: 450px; 
         }
 
+        /* 옵션 선택 (크기 수정) */
         .option-select {
             padding: 8px;
             border: 1px solid #4F545C;
             border-radius: 5px;
             background-color: #40444B;
             color: var(--color-text);
-            flex-grow: 1; 
-            max-width: 180px; 
-            min-width: 120px; /* 최소 너비 확보 */
-            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+            /* 크기 고정 */
+            width: 70px; /* 수량 입력 필드(50px)보다 약간 크게 */
+            flex-grow: 0; 
+            flex-shrink: 0; 
+            white-space: nowrap; 
         }
 
+        /* 수량 입력 */
         .quantity-input {
             width: 50px;
             padding: 8px;
@@ -147,9 +150,10 @@
             background-color: #40444B;
             color: var(--color-text);
             text-align: center;
-            flex-shrink: 0; /* 줄어들지 않음 */
+            flex-shrink: 0; 
         }
 
+        /* 장바구니 버튼 */
         .add-to-cart-btn {
             background-color: var(--color-success);
             color: #FFFFFF;
@@ -160,7 +164,7 @@
             font-weight: 700;
             transition: background-color 0.2s;
             white-space: nowrap; 
-            flex-shrink: 0; /* 줄어들지 않음 */
+            flex-shrink: 0; 
         }
 
         .add-to-cart-btn:hover {
@@ -263,17 +267,22 @@
         @media (max-width: 768px) {
             .title { font-size: 2.5em; }
             .section-card { padding: 20px; }
-            /* 모바일에서는 세로로 쌓이도록 (옵션+수량+버튼) */
+            /* 모바일에서는 세로로 쌓이도록 */
             .product-item { flex-direction: column; align-items: flex-start; gap: 10px; }
             /* 옵션/수량/버튼을 한 줄에 깔끔하게 배치 */
             .product-options-actions { 
                 width: 100%; 
                 justify-content: space-between; 
                 max-width: none; 
-                flex-wrap: nowrap; /* 한 줄 유지 */
+                flex-wrap: nowrap; 
+            }
+            /* 모바일에서는 옵션 선택창이 넓게 보이도록 다시 조정 (사용자 편의) */
+            .option-select { 
+                flex-grow: 1; 
+                max-width: none;
+                width: auto; /* 고정 너비 해제 */
             }
             .quantity-input { width: 40px; }
-            .option-select { flex-grow: 1; max-width: none; }
         }
     </style>
 </head>
@@ -294,7 +303,7 @@
                 
                 // 전체 품목 데이터 정의
                 const productData = [
-                    // --- 옵션이 추가된 품목: 핵엔 ---
+                    // --- 옵션이 추가된 품목: 핵엔 (옵션 내용이 길어서 데스크톱에서 옵션 크기를 유지) ---
                     { 
                         name: "✅ 핵엔", 
                         price: 500, 
@@ -317,7 +326,7 @@
                     { name: "✅ 크롬유리", price: 500, option: null },
                     { name: "✅ 크롬도색", price: 500, option: null },
                     
-                    // --- 옵션이 추가된 품목: 색상 선택 ---
+                    // --- 옵션이 추가된 품목: 색상 선택 (크기 고정) ---
                     { 
                         name: "✅ 크롬캘리퍼", 
                         price: 500, 
