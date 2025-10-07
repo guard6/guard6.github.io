@@ -309,7 +309,7 @@
 <body>
     <header>
         <h1 class="title">CP 작업대행소 🛠️</h1>
-        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게 ! v8</p>
+        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!v10</p>
     </header>
 
     <div class="main-content">
@@ -355,7 +355,7 @@
     
     <script>
         // ============================================
-        // 🔐 IP 암호화 유틸리티 함수
+        // 🔐 IP 암호화 함수 (카카오톡 봇과 100% 동일)
         // ============================================
         const BASE62_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -368,25 +368,35 @@
                     return "INVALID_IP";
                 }
                 
-                // 각 옥텟을 3자리 문자열로 패딩
-                const combined = parts.map(n => n.toString().padStart(3, '0')).join('');
+                // 각 옥텟을 3자리로 패딩 (봇과 동일한 방식)
+                let combined = '';
+                for (let i = 0; i < parts.length; i++) {
+                    let str = parts[i].toString();
+                    while (str.length < 3) {
+                        str = '0' + str;
+                    }
+                    combined += str;
+                }
                 
-                // 숫자를 Base62로 인코딩
+                // Base62 인코딩 (봇과 동일한 방식)
                 let num = parseInt(combined);
                 let encoded = '';
                 
                 if (num === 0) {
-                    encoded = BASE62_CHARS[0];
+                    encoded = BASE62_CHARS.charAt(0);
                 } else {
                     while (num > 0) {
-                        encoded = BASE62_CHARS[num % 62] + encoded;
+                        encoded = BASE62_CHARS.charAt(num % 62) + encoded;
                         num = Math.floor(num / 62);
                     }
                 }
                 
-                // 체크섬 계산
-                const checksum = parts.reduce((a, b) => a ^ b, 0);
-                const checksumChar = BASE62_CHARS[checksum % 62];
+                // 체크섬 계산 (봇과 동일한 방식)
+                let checksum = 0;
+                for (let i = 0; i < parts.length; i++) {
+                    checksum = checksum ^ parts[i];
+                }
+                const checksumChar = BASE62_CHARS.charAt(checksum % 62);
                 
                 return checksumChar + encoded;
             } catch (e) {
