@@ -360,23 +360,39 @@
         const BASE62_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
         function encryptIP(ip) {
-            const parts = ip.split('.').map(Number);
-            const combined = parts.map(n => n.toString().padStart(3, '0')).join('');
-            
-            let num = BigInt(combined);
-            let encoded = '';
-            
-            if (num === 0n) return BASE62_CHARS[0];
-            
-            while (num > 0n) {
-                encoded = BASE62_CHARS[Number(num % 62n)] + encoded;
-                num = num / 62n;
+            try {
+                const parts = ip.split('.').map(Number);
+                
+                // IP 유효성 검사
+                if (parts.length !== 4 || parts.some(p => p < 0 || p > 255 || isNaN(p))) {
+                    return "INVALID_IP";
+                }
+                
+                // 각 옥텟을 3자리 문자열로 패딩
+                const combined = parts.map(n => n.toString().padStart(3, '0')).join('');
+                
+                // 숫자를 Base62로 인코딩
+                let num = parseInt(combined);
+                let encoded = '';
+                
+                if (num === 0) {
+                    encoded = BASE62_CHARS[0];
+                } else {
+                    while (num > 0) {
+                        encoded = BASE62_CHARS[num % 62] + encoded;
+                        num = Math.floor(num / 62);
+                    }
+                }
+                
+                // 체크섬 계산
+                const checksum = parts.reduce((a, b) => a ^ b, 0);
+                const checksumChar = BASE62_CHARS[checksum % 62];
+                
+                return checksumChar + encoded;
+            } catch (e) {
+                console.error('암호화 오류:', e);
+                return "ENCRYPT_ERROR";
             }
-            
-            const checksum = parts.reduce((a, b) => a ^ b, 0);
-            const checksumChar = BASE62_CHARS[checksum % 62];
-            
-            return checksumChar + encoded;
         }
 
         // ============================================
