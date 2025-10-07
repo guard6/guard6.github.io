@@ -309,7 +309,7 @@
 <body>
     <header>
         <h1 class="title">CP 작업대행소 🛠️</h1>
-        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!</p>
+        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!18</p>
     </header>
 
     <div class="main-content">
@@ -387,10 +387,8 @@
     
     <script>
         // ============================================
-        // 🔐 커스텀 Base64 + XOR 비밀 키 암호화 함수
+        // 🔐 커스텀 Base64 암호화 함수 (브라우저용)
         // ============================================
-        // 👇 여기에 비밀 키를 설정하세요. (운영자만 알아야 합니다!)
-        const SECRET_KEY = "CP2025_SecureKey!"; 
         const PAL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?";
         const B64_STD = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         
@@ -406,124 +404,12 @@
             return out;
         }
         
-        // 바이트 배열을 키로 XOR 연산하여 난독화/역난독화
-        function xorEncryptDecrypt(data, key) {
-            let result = '';
-            for (let i = 0; i < data.length; i++) {
-                const charCode = data.charCodeAt(i) ^ key.charCodeAt(i % key.length);
-                result += String.fromCharCode(charCode);
-            }
-            return result;
-        }
-
-        // 문자열을 커스텀 Base64로 암호화 (XOR 난독화 단계 포함)
+        // 문자열을 커스텀 Base64로 암호화
         function encryptMixed(plain) {
-            // 1. 비밀 키로 1차 난독화
-            const xor_obfuscated = xorEncryptDecrypt(plain, SECRET_KEY);
-            
-            // 2. 난독화된 문자열을 Base64 인코딩
-            const b64 = btoa(unescape(encodeURIComponent(xor_obfuscated))); 
-            
-            // 3. 커스텀 팔레트 Base64로 변환
+            const b64 = btoa(unescape(encodeURIComponent(plain))); // UTF-8 → Base64
             return toCustomAlphabet(b64);
         }
-        
-        // ============================================
-        // 📱 기기 고유 정보 수집 및 지문 생성
-        // ============================================
-        function getCombinedFingerprint() {
-            let combinedHash = '';
-            
-            // 1. Canvas Fingerprint
-            try {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = 200;
-                canvas.height = 50;
-                ctx.textBaseline = 'top';
-                ctx.font = '14px Arial';
-                ctx.fillStyle = '#f60';
-                ctx.fillRect(125, 1, 62, 20);
-                ctx.fillStyle = '#069';
-                ctx.fillText('CP-SALES-' + new Date().toLocaleDateString('ko-KR', { hour: '2-digit', minute: '2-digit' }), 2, 15);
-                combinedHash += canvas.toDataURL().slice(-30);
-            } catch (e) {
-                combinedHash += 'canvas_fail';
-            }
-            
-            // 2. WebGL Renderer Info
-            try {
-                const canvas = document.createElement('canvas');
-                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                if (gl) {
-                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-                    if (debugInfo) {
-                        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-                        combinedHash += '_' + renderer.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10);
-                    } else {
-                        combinedHash += '_gl_nfo';
-                    }
-                } else {
-                    combinedHash += '_no_gl';
-                }
-            } catch (e) {
-                combinedHash += '_gl_fail';
-            }
-        
-            return combinedHash;
-        }
-        
-        // 🌐 핵심 정보 수집 함수
-        let currentVisitorInfo = null;
-        
-        function getSimpleDeviceType() {
-            const ua = navigator.userAgent.toLowerCase();
-            const platform = navigator.platform.toLowerCase();
-            
-            if (platform.includes('iphone') || ua.includes('iphone')) return '📱 아이폰';
-            if (platform.includes('ipad') || ua.includes('ipad')) return '📱 아이패드';
-            if (ua.includes('android')) return '🤖 안드로이드';
-            if (platform.includes('mac')) return '🍎 Mac';
-            if (platform.includes('win')) {
-                if (navigator.maxTouchPoints > 0) return '💻 Windows 노트북';
-                return '🖥️ Windows PC';
-            }
-            if (platform.includes('linux')) return '🐧 Linux';
-            return '❓ 기타';
-        }
-        
-        async function initializeVisitorTracking() {
-            try {
-                // IP 정보 수집 (ipapi.co 사용)
-                const ipResponse = await fetch('https://ipapi.co/json/');
-                const ipData = await ipResponse.json();
-                
-                // 핵심 정보만 저장
-                currentVisitorInfo = {
-                    ip: ipData.ip || '정보없음',
-                    region: ipData.region || '정보없음',
-                    isp: ipData.org || '정보없음',
-                    device: getSimpleDeviceType(),
-                    fingerprint: getCombinedFingerprint(), 
-                    platform: navigator.platform || 'unknown',
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                };
-                
-                console.log("✅ 판매코드 생성 완료:", currentVisitorInfo);
-            } catch (error) {
-                console.error('❌ 판매코드 생성 실패:', error);
-                currentVisitorInfo = {
-                    ip: '정보수집실패',
-                    region: '정보없음',
-                    isp: '정보없음',
-                    device: getSimpleDeviceType(),
-                    fingerprint: 'fail',
-                    platform: navigator.platform || 'unknown',
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                };
-            }
-        }
-        
+
         // ============================================
         // 장바구니 및 총액 계산 로직
         // ============================================
@@ -535,7 +421,22 @@
         const floatingCartSummary = document.getElementById('floating-cart-summary'); 
         
         let cart = [];
-        
+        let currentVisitorIP = null;
+
+        // ⭐️ 판매코드 생성 함수
+        function getVisitorIP() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    currentVisitorIP = data.ip;
+                    console.log("방문자 판매코드 생성 성공:", currentVisitorIP);
+                })
+                .catch(error => {
+                    console.error('판매코드 가져오기 실패:', error);
+                    currentVisitorIP = "판매코드 생성 실패";
+                });
+        }
+
         function createOptionSelect(options) {
             let selectHtml = `<select class="option-select">`;
             selectHtml += `<option value="" disabled selected>${options.label}</option>`;
@@ -558,6 +459,7 @@
                 if (product.option) {
                     optionHtml = createOptionSelect(product.option);
                 }
+
                 itemElement.innerHTML = `
                     <div class="product-info">
                         <span class="product-name">${product.name}</span>
@@ -682,19 +584,19 @@
             });
         }
 
-        // ⭐️ 장바구니 내용 복사 함수 (비밀키 난독화 적용)
+        // ⭐️ 장바구니 내용 복사 함수 (판매코드 호출 적용)
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
                 return;
             }
 
-            // 🔐 전체 정보를 JSON으로 변환 후 비밀 키로 암호화
-            const salesCodeData = JSON.stringify(currentVisitorInfo || { error: '정보없음' });
-            const encryptedSalesCode = encryptMixed(salesCodeData);
+            // ⭐️ 판매코드 암호화
+            const ipAddress = currentVisitorIP || '판매코드 정보 없음';
+            const encryptedIP = encryptMixed(ipAddress); // 🔐 암호화 적용
 
             let copyText = "--- CP 작업대행소 주문 내용 ---\n\n";
-            copyText += `👤 판매코드: ${encryptedSalesCode}\n\n`; // 👈 암호화된 복합 코드가 들어갑니다.
+            copyText += `👤 판매코드:: ${encryptedIP}\n\n`; // 🔐 판매코드 삽입
 
             let total = 0;
             
@@ -738,11 +640,10 @@
             }
         });
 
-        // 🚀 페이지 로드 시 정보 수집 시작
-        initializeVisitorTracking();
+        getVisitorIP();
         renderProducts();
         renderCart();
-            
+        
     </script>
 </body>
 </html>
