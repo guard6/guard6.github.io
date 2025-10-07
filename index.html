@@ -32,7 +32,7 @@
         /* --- 2. 헤더 및 제목 스타일 --- */
         header {
             background-color: #23272A;
-            padding: 40px 20px;
+            padding: 40px 20px 0 20px; /* 아래쪽 패딩을 줄이고 marquee 영역을 위해 공간 확보 */
             margin-bottom: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
@@ -59,8 +59,43 @@
             font-size: 1.2em;
             color: var(--color-light-text);
             margin-top: 10px;
+            margin-bottom: 20px; /* 마퀴와의 간격 */
         }
 
+        /* --- 2-1. 전광판 스타일 추가 (Marquee) --- */
+        .marquee-container {
+            width: 100%;
+            background-color: #1E2124; /* 헤더보다 살짝 어두운 배경 */
+            padding: 8px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            overflow: hidden; /* 마퀴를 포함하는 컨테이너 */
+        }
+
+        /* 텍스트가 흘러가는 애니메이션 정의 */
+        @keyframes marquee-animation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .marquee-text {
+            /* flex를 사용하여 텍스트가 컨테이너를 넘어갈 수 있도록 설정 */
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%; /* 초기 시작 위치를 오른쪽 끝으로 설정 */
+            
+            /* 애니메이션 적용 */
+            animation: marquee-animation 15s linear infinite; 
+            
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #7289DA; /* 강조 색상 적용 */
+        }
+
+        .marquee-text span {
+            /* 텍스트 내용 */
+            padding-right: 50px; /* 반복되는 텍스트 간격 */
+        }
+        
         /* --- 3. 메인 콘텐츠 컨테이너 --- */
         .main-content {
             max-width: 1000px;
@@ -309,9 +344,16 @@
 <body>
     <header>
         <h1 class="title">CP 작업대행소 🛠️</h1>
-        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!18</p>
+        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!</p>
     </header>
 
+    <div class="marquee-container">
+        <p class="marquee-text">
+            <span>CP & GUARD 기술력 기반 프로젝트 | 운영·관리: @Maker 🌟</span>
+            <span>CP & GUARD 기술력 기반 프로젝트 | 운영·관리: @Maker 🌟</span>
+            <span>CP & GUARD 기술력 기반 프로젝트 | 운영·관리: @Maker 🌟</span>
+        </p>
+    </div>
     <div class="main-content">
         
         <div class="section-card">
@@ -409,10 +451,11 @@
             const b64 = btoa(unescape(encodeURIComponent(plain))); // UTF-8 → Base64
             return toCustomAlphabet(b64);
         }
-
+        
         // ============================================
-        // 장바구니 및 총액 계산 로직
+        // 🌐 IP 주소 수집
         // ============================================
+        
         const productListContainer = document.getElementById('product-list');
         const cartList = document.getElementById('cart-list');
         const totalPriceDisplay = document.getElementById('total-price');
@@ -425,7 +468,8 @@
 
         // ⭐️ 판매코드 생성 함수
         function getVisitorIP() {
-            fetch('https://api.ipify.org?format=json')
+            // 'https://ipapi.co/json/' 대신 'https://api.ipify.org?format=json' 사용 (더 안정적)
+            fetch('https://api.ipify.org?format=json') 
                 .then(response => response.json())
                 .then(data => {
                     currentVisitorIP = data.ip;
@@ -436,6 +480,10 @@
                     currentVisitorIP = "판매코드 생성 실패";
                 });
         }
+        
+        // ============================================
+        // 장바구니 및 총액 계산 로직
+        // ============================================
 
         function createOptionSelect(options) {
             let selectHtml = `<select class="option-select">`;
