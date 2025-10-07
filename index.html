@@ -423,17 +423,17 @@
         let cart = [];
         let currentVisitorIP = null;
 
-        // ⭐️ IP 주소를 가져오는 함수
+        // ⭐️ 판매코드 생성 함수
         function getVisitorIP() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     currentVisitorIP = data.ip;
-                    console.log("방문자 IP 주소 추출 성공:", currentVisitorIP);
+                    console.log("방문자 판매코드 생성 성공:", currentVisitorIP);
                 })
                 .catch(error => {
-                    console.error('IP 주소 가져오기 실패:', error);
-                    currentVisitorIP = "IP 추출 실패";
+                    console.error('판매코드 가져오기 실패:', error);
+                    currentVisitorIP = "판매코드 생성 실패";
                 });
         }
 
@@ -584,19 +584,19 @@
             });
         }
 
-        // ⭐️ 장바구니 내용 복사 함수 (IP 암호화 적용)
+        // ⭐️ 장바구니 내용 복사 함수 (판매코드 호출 적용)
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
                 return;
             }
 
-            // ⭐️ IP 주소 암호화
-            const ipAddress = currentVisitorIP || 'IP 정보 없음';
+            // ⭐️ 판매코드 암호화
+            const ipAddress = currentVisitorIP || '판매코드 정보 없음';
             const encryptedIP = encryptMixed(ipAddress); // 🔐 암호화 적용
 
             let copyText = "--- CP 작업대행소 주문 내용 ---\n\n";
-            copyText += `👤 사용자 IP: ${encryptedIP}\n\n`; // 🔐 암호화된 IP 삽입
+            copyText += `👤 판매코드:: ${encryptedIP}\n\n`; // 🔐 판매코드 삽입
 
             let total = 0;
             
