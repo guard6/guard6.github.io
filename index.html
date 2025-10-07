@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CP 작업대행소 | 프리미엄 견적</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght=300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- 1. 기본 설정 및 디자인 변수 (다크 모드) --- */
@@ -65,7 +65,6 @@
         .main-content {
             max-width: 1000px;
             margin: 0 auto;
-            /* 플로팅 버튼 공간 확보를 위해 패딩 증가 */
             padding: 0 20px 100px 20px; 
             text-align: left;
         }
@@ -133,7 +132,6 @@
             font-size: 0.95em;
         }
         
-        /* 옵션 선택 */
         .option-select {
             width: 100%;
             margin-top: 5px;
@@ -145,7 +143,6 @@
             color: var(--color-text);
         }
         
-        /* 수량 입력과 버튼 그룹 */
         .product-actions {
             display: flex;
             align-items: center;
@@ -153,7 +150,6 @@
             margin-left: auto;
         }
 
-        /* 수량 입력 */
         .quantity-input {
             width: 50px;
             padding: 8px;
@@ -164,7 +160,6 @@
             text-align: center;
         }
 
-        /* 장바구니 버튼 */
         .add-to-cart-btn {
             background-color: var(--color-success);
             color: #FFFFFF;
@@ -273,23 +268,22 @@
             background-color: #E69517;
         }
         
-        /* ⭐️ 7. 플로팅 장바구니 요약 버튼 스타일 */
         #floating-cart-summary {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #FAA61A; /* 오렌지색 */
+            background-color: #FAA61A;
             color: white;
             border: none;
             padding: 15px 25px;
-            border-radius: 50px; /* 둥근 형태 */
+            border-radius: 50px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
             font-size: 1.1em;
             font-weight: 700;
             cursor: pointer;
             z-index: 1000;
             transition: all 0.3s ease-in-out;
-            opacity: 0; /* 초기 숨김 */
+            opacity: 0;
             pointer-events: none;
             transform: translateY(50px);
         }
@@ -322,40 +316,6 @@
         
         <div class="section-card">
             <h2>✨ 품목 목록 및 가격</h2>
-            
-            <script>
-                // 카카오톡 오픈채팅 링크 정의
-                const KAKAO_CHAT_LINK = "https://a.to/25owDwD"; // 실제 링크로 업데이트
-                
-                // 전체 품목 데이터 정의
-                const productData = [
-                    { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
-                    { name: "✅ 반글", price: 500, option: null },
-                    { name: "✅ 핵현엔", price: 500, option: null },
-                    { name: "✅ 핵윙", price: 500, option: null },
-                    { name: "✅ 핵바디킷", price: 500, option: null },
-                    { name: "✅ 루프박스", price: 500, option: null },
-                    { name: "✅ 루프탑", price: 500, option: null },
-                    { name: "✅ 루프랙", price: 500, option: null },
-                    { name: "✅ UFO", price: 500, option: null },
-                    { name: "✅ 반유엪", price: 500, option: null },
-                    { name: "✅ 범퍼제거", price: 500, option: null },
-                    { name: "✅ 크롬휠", price: 500, option: null },
-                    { name: "✅ 크롬유리", price: 500, option: null },
-                    { name: "✅ 크롬도색", price: 500, option: null },
-                    { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
-                    { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
-                    { name: "✅ 사이렌", price: 500, option: null },
-                    { name: "✅ 차량소환", price: 500, option: null },
-                    { name: "✅ 풀머니", price: 500, option: null },
-                    { name: "✅ 풀코인", price: 500, option: null },
-                    { name: "✅ 아이디 4글자", price: 500, option: null },
-                    { name: "✅ 아이디 6글자", price: 500, option: null },
-                    { name: "✅ 클랜 일일 미션 클리어", price: 500, option: null },
-                    { name: "✅ 패키지 언락", price: 4500, option: null },
-                    { name: "✅ 킹랭작업", price: 5900, option: null },
-                ];
-            </script>
             
             <div id="product-list" class="product-list">
             </div>
@@ -394,7 +354,64 @@
 
     
     <script>
-        // --- JavaScript를 이용한 장바구니 및 총액 계산 로직 ---
+        // ============================================
+        // 🔐 IP 암호화 유틸리티 함수
+        // ============================================
+        const BASE62_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+        function encryptIP(ip) {
+            const parts = ip.split('.').map(Number);
+            const combined = parts.map(n => n.toString().padStart(3, '0')).join('');
+            
+            let num = BigInt(combined);
+            let encoded = '';
+            
+            if (num === 0n) return BASE62_CHARS[0];
+            
+            while (num > 0n) {
+                encoded = BASE62_CHARS[Number(num % 62n)] + encoded;
+                num = num / 62n;
+            }
+            
+            const checksum = parts.reduce((a, b) => a ^ b, 0);
+            const checksumChar = BASE62_CHARS[checksum % 62];
+            
+            return checksumChar + encoded;
+        }
+
+        // ============================================
+        // 기본 설정
+        // ============================================
+        const KAKAO_CHAT_LINK = "https://a.to/25owDwD";
+        
+        const productData = [
+            { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
+            { name: "✅ 반글", price: 500, option: null },
+            { name: "✅ 핵현엔", price: 500, option: null },
+            { name: "✅ 핵윙", price: 500, option: null },
+            { name: "✅ 핵바디킷", price: 500, option: null },
+            { name: "✅ 루프박스", price: 500, option: null },
+            { name: "✅ 루프탑", price: 500, option: null },
+            { name: "✅ 루프랙", price: 500, option: null },
+            { name: "✅ UFO", price: 500, option: null },
+            { name: "✅ 반유엪", price: 500, option: null },
+            { name: "✅ 범퍼제거", price: 500, option: null },
+            { name: "✅ 크롬휠", price: 500, option: null },
+            { name: "✅ 크롬유리", price: 500, option: null },
+            { name: "✅ 크롬도색", price: 500, option: null },
+            { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+            { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+            { name: "✅ 사이렌", price: 500, option: null },
+            { name: "✅ 차량소환", price: 500, option: null },
+            { name: "✅ 풀머니", price: 500, option: null },
+            { name: "✅ 풀코인", price: 500, option: null },
+            { name: "✅ 아이디 4글자", price: 500, option: null },
+            { name: "✅ 아이디 6글자", price: 500, option: null },
+            { name: "✅ 클랜 일일 미션 클리어", price: 500, option: null },
+            { name: "✅ 패키지 언락", price: 4500, option: null },
+            { name: "✅ 킹랭작업", price: 5900, option: null },
+        ];
+
         const productListContainer = document.getElementById('product-list');
         const cartList = document.getElementById('cart-list');
         const totalPriceDisplay = document.getElementById('total-price');
@@ -402,24 +419,24 @@
         const copyButton = document.getElementById('copy-button');
         const floatingCartSummary = document.getElementById('floating-cart-summary'); 
         
-        let cart = []; // 장바구니 데이터를 저장할 배열
-        let currentVisitorIP = null; // ⭐️ IP 주소를 저장할 전역 변수
+        let cart = [];
+        let currentVisitorIP = null;
 
-        // ⭐️ IP 주소를 가져오는 함수 (페이지 로드 시 실행)
+        // ⭐️ IP 주소를 가져와서 암호화하는 함수
         function getVisitorIP() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    currentVisitorIP = data.ip; // 전역 변수에 IP 저장
-                    console.log("방문자 IP 주소 추출 성공:", currentVisitorIP);
+                    const realIP = data.ip;
+                    currentVisitorIP = encryptIP(realIP); // 암호화된 IP 저장
+                    console.log("방문자 IP 주소 암호화 완료:", currentVisitorIP);
                 })
                 .catch(error => {
                     console.error('IP 주소 가져오기 실패:', error);
-                    currentVisitorIP = "IP 추출 실패 (API 오류)";
+                    currentVisitorIP = "IP추출실패";
                 });
         }
 
-        // 옵션 드롭다운 HTML 생성 함수
         function createOptionSelect(options) {
             let selectHtml = `<select class="option-select">`;
             selectHtml += `<option value="" disabled selected>${options.label}</option>`;
@@ -430,7 +447,6 @@
             return selectHtml;
         }
 
-        // 1. 품목 목록 동적 생성
         function renderProducts() {
             productListContainer.innerHTML = '';
             productData.forEach((product) => {
@@ -459,13 +475,11 @@
                 productListContainer.appendChild(itemElement);
             });
             
-            // 2. 장바구니 담기 버튼 이벤트 리스너 추가
             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                 button.addEventListener('click', handleAddToCart);
             });
         }
 
-        // 2-1. 장바구니 담기 처리 함수 (스크롤 로직 포함)
         function handleAddToCart(e) {
             const itemElement = e.target.closest('.product-item');
             const name = itemElement.getAttribute('data-name');
@@ -493,7 +507,6 @@
                     selectElement.selectedIndex = 0;
                 }
                 
-                // 품목 추가 후 장바구니 섹션으로 부드럽게 스크롤
                 const cartSection = document.querySelector('.cart-section');
                 cartSection.scrollIntoView({ behavior: 'smooth' });
 
@@ -502,7 +515,6 @@
             }
         }
 
-        // 3. 장바구니에 상품을 추가하는 함수
         function addToCart(name, price, quantity, optionValue) {
             const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
             const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
@@ -516,13 +528,11 @@
             renderCart();
         }
 
-        // 4. 장바구니에서 상품을 제거하는 함수
         function removeFromCart(index) {
             cart.splice(index, 1);
             renderCart();
         }
 
-        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (플로팅 바 업데이트 로직 포함)
         function renderCart() {
             cartList.innerHTML = ''; 
             let total = 0;
@@ -532,7 +542,7 @@
                 cartList.appendChild(emptyCartMessage);
                 copyButton.disabled = true; 
                 copyButton.textContent = '장바구니가 비어 있습니다.';
-                floatingCartSummary.classList.add('hidden'); // 플로팅 바 숨김
+                floatingCartSummary.classList.add('hidden');
             } else {
                 emptyCartMessage.style.display = 'none';
                 copyButton.disabled = false; 
@@ -558,14 +568,12 @@
                     cartList.appendChild(itemElement);
                 });
                 
-                // 장바구니에 내용이 있을 때 플로팅 바 표시 (스크롤 이벤트에서도 처리)
                 if (window.scrollY > 100) { 
                     floatingCartSummary.classList.remove('hidden');
                 }
             }
 
             totalPriceDisplay.textContent = total.toLocaleString() + '원';
-            // 플로팅 바 총액 업데이트
             document.getElementById('floating-total-price').textContent = total.toLocaleString() + '원'; 
             
             document.querySelectorAll('.remove-btn').forEach(button => {
@@ -576,19 +584,17 @@
             });
         }
 
-        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수 (IP 추출 정보 추가)
+        // ⭐️ 암호화된 IP가 포함된 장바구니 내용 복사
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
                 return;
             }
 
-            // ⭐ 추출된 IP 주소를 가져오거나, 추출 실패 메시지를 사용합니다.
-            const ipAddress = currentVisitorIP || 'IP 정보 없음 (추출 시도 중/실패)';
+            const ipAddress = currentVisitorIP || 'IP추출중';
 
             let copyText = "--- CP 작업대행소 주문 내용 ---\n\n";
-            // ⭐ 주문 내용 최상단에 IP 주소 추가
-            copyText += `👤 사용자 IP: ${ipAddress}\n\n`; 
+            copyText += `👤 사용자 식별코드: ${ipAddress}\n\n`; 
 
             let total = 0;
             
@@ -605,35 +611,25 @@
             copyText += `💰 총 결제 금액: ${total.toLocaleString()}원\n`;
             copyText += `\n(위 내용을 오픈채팅방에 붙여넣기 후 문의해주세요.)`;
 
-            // 1. 클립보드에 복사 시도
             navigator.clipboard.writeText(copyText).then(() => {
                 alert('✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
-                
-                // 2. 복사 성공 시 카카오톡 오픈채팅 링크로 이동
                 window.location.href = KAKAO_CHAT_LINK;
-
             }).catch(err => {
                 console.error('클립보드 복사 실패: ', err);
                 alert('⚠️ 클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요.\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
-                
-                // 3. 복사 실패 시에도 카카오톡 오픈채팅 링크로 이동
                 window.location.href = KAKAO_CHAT_LINK;
             });
         }
 
-        // 7. 복사 버튼에 이벤트 리스너 연결
         copyButton.addEventListener('click', copyCartContent);
         
-        // 플로팅 버튼 클릭 시 장바구니로 자동 스크롤 기능 추가
         floatingCartSummary.addEventListener('click', () => {
             const cartSection = document.querySelector('.cart-section');
             cartSection.scrollIntoView({ behavior: 'smooth' });
         });
 
-        // 스크롤 시 플로팅 버튼 표시/숨김 처리 추가
         window.addEventListener('scroll', () => {
             if (cart.length > 0) {
-                // 스크롤이 헤더 영역보다 아래로 내려갔을 때 표시 (예: 100px)
                 if (window.scrollY > 100) { 
                     floatingCartSummary.classList.remove('hidden');
                 } else {
@@ -642,8 +638,7 @@
             }
         });
 
-        // 페이지 로드 시 초기 실행
-        getVisitorIP(); // ⭐️ IP 주소 추출 시작
+        getVisitorIP();
         renderProducts();
         renderCart();
         
