@@ -37,11 +37,22 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
+        /* 🌈 실시간 색상 변경 애니메이션 정의 */
+        @keyframes color-cycle {
+            0% { color: #FF0000; } /* 빨강 */
+            16% { color: #FFA500; } /* 주황 */
+            32% { color: #FFFF00; } /* 노랑 */
+            48% { color: #00FF00; } /* 초록 */
+            64% { color: #00BFFF; } /* 하늘색 */
+            80% { color: #8A2BE2; } /* 파랑/보라 */
+            100% { color: #FF0000; } /* 빨강으로 돌아가 부드럽게 연결 */
+        }
+
         .title {
             font-size: 3em;
-            color: #FFFFFF;
             font-weight: 700;
             margin: 0;
+            animation: color-cycle 6s linear infinite; 
         }
 
         .subtitle {
@@ -76,7 +87,7 @@
             font-size: 1.8em;
         }
 
-        /* --- 5. 상품 목록 스타일 --- */
+        /* --- 5. 상품 목록 스타일 (수정) --- */
         .product-list {
             display: flex;
             flex-direction: column;
@@ -85,13 +96,14 @@
 
         .product-item {
             display: flex;
+            /* 옵션 필드를 아랫줄로 내리기 위해 wrap 설정 */
+            flex-wrap: wrap; 
             align-items: center;
             justify-content: space-between;
             background-color: #2F3136;
             padding: 15px 20px;
             border-radius: 8px;
             transition: background-color 0.2s;
-            min-height: 50px; 
         }
 
         .product-item:hover {
@@ -104,6 +116,9 @@
             align-items: flex-start;
             flex-grow: 1;
             justify-content: center;
+            /* 품목 이름과 가격이 옵션 위 한 줄에 위치하도록 */
+            width: 100%; 
+            margin-bottom: 5px; 
         }
 
         .product-name {
@@ -119,26 +134,25 @@
             font-size: 0.95em;
         }
         
-        /* 옵션 및 액션 그룹 */
-        .product-options-actions {
-            display: flex;
-            align-items: center; 
-            gap: 10px;
-            max-width: 450px; 
-        }
-
-        /* 옵션 선택 (크기 수정) */
+        /* 옵션 선택 (새로운 위치 - 단독 한 줄) */
         .option-select {
+            width: 100%; /* 옵션 필드가 한 줄 전체를 차지하도록 */
+            margin-top: 5px;
+            margin-bottom: 5px;
             padding: 8px;
             border: 1px solid #4F545C;
             border-radius: 5px;
             background-color: #40444B;
             color: var(--color-text);
-            /* 크기 고정 */
-            width: 70px; /* 수량 입력 필드(50px)보다 약간 크게 */
-            flex-grow: 0; 
-            flex-shrink: 0; 
-            white-space: nowrap; 
+        }
+        
+        /* 수량 입력과 버튼 그룹 (product-actions로 묶임) */
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* 우측 정렬 */
+            margin-left: auto; 
         }
 
         /* 수량 입력 */
@@ -150,7 +164,6 @@
             background-color: #40444B;
             color: var(--color-text);
             text-align: center;
-            flex-shrink: 0; 
         }
 
         /* 장바구니 버튼 */
@@ -164,7 +177,6 @@
             font-weight: 700;
             transition: background-color 0.2s;
             white-space: nowrap; 
-            flex-shrink: 0; 
         }
 
         .add-to-cart-btn:hover {
@@ -267,22 +279,12 @@
         @media (max-width: 768px) {
             .title { font-size: 2.5em; }
             .section-card { padding: 20px; }
-            /* 모바일에서는 세로로 쌓이도록 */
-            .product-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-            /* 옵션/수량/버튼을 한 줄에 깔끔하게 배치 */
-            .product-options-actions { 
-                width: 100%; 
-                justify-content: space-between; 
-                max-width: none; 
-                flex-wrap: nowrap; 
+            /* 모바일에서 product-item은 기본 wrap 상태 유지 */
+            
+            /* 옵션 선택 필드는 이제 100% 너비를 차지하므로 별도 조정 불필요 */
+            .product-actions { 
+                margin-left: 0;
             }
-            /* 모바일에서는 옵션 선택창이 넓게 보이도록 다시 조정 (사용자 편의) */
-            .option-select { 
-                flex-grow: 1; 
-                max-width: none;
-                width: auto; /* 고정 너비 해제 */
-            }
-            .quantity-input { width: 40px; }
         }
     </style>
 </head>
@@ -303,7 +305,6 @@
                 
                 // 전체 품목 데이터 정의
                 const productData = [
-                    // --- 옵션이 추가된 품목: 핵엔 (옵션 내용이 길어서 데스크톱에서 옵션 크기를 유지) ---
                     { 
                         name: "✅ 핵엔", 
                         price: 500, 
@@ -326,7 +327,6 @@
                     { name: "✅ 크롬유리", price: 500, option: null },
                     { name: "✅ 크롬도색", price: 500, option: null },
                     
-                    // --- 옵션이 추가된 품목: 색상 선택 (크기 고정) ---
                     { 
                         name: "✅ 크롬캘리퍼", 
                         price: 500, 
@@ -408,7 +408,7 @@
             return selectHtml;
         }
 
-        // 1. 품목 목록 동적 생성
+        // 1. 품목 목록 동적 생성 (HTML 구조 변경 적용)
         function renderProducts() {
             productListContainer.innerHTML = '';
             productData.forEach((product) => {
@@ -419,6 +419,7 @@
                 
                 let optionHtml = '';
                 if (product.option) {
+                    // 옵션이 있는 경우에만 HTML 생성
                     optionHtml = createOptionSelect(product.option);
                 }
 
@@ -427,8 +428,9 @@
                         <span class="product-name">${product.name}</span>
                         <span class="product-price">${product.price.toLocaleString()}원</span>
                     </div>
-                    <div class="product-options-actions">
-                        ${optionHtml}
+                    ${optionHtml} 
+                    
+                    <div class="product-actions">
                         <input type="number" class="quantity-input" value="1" min="1">
                         <button class="add-to-cart-btn">장바구니 담기</button>
                     </div>
@@ -442,6 +444,8 @@
                     const itemElement = e.target.closest('.product-item');
                     const name = itemElement.getAttribute('data-name');
                     const price = parseInt(itemElement.getAttribute('data-price'));
+                    
+                    // 수량 입력과 옵션 선택 요소는 itemElement 내에서 직접 찾음
                     const quantityInput = itemElement.querySelector('.quantity-input');
                     const selectElement = itemElement.querySelector('.option-select');
                     
@@ -470,7 +474,7 @@
             });
         }
         
-        // 3. 장바구니에 상품을 추가하는 함수
+        // 3. 장바구니에 상품을 추가하는 함수 (변동 없음)
         function addToCart(name, price, quantity, optionValue) {
             const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
             const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
@@ -484,13 +488,13 @@
             renderCart();
         }
 
-        // 4. 장바구니에서 상품을 제거하는 함수
+        // 4. 장바구니에서 상품을 제거하는 함수 (변동 없음)
         function removeFromCart(index) {
             cart.splice(index, 1);
             renderCart();
         }
 
-        // 5. 장바구니 목록과 총액을 다시 그리는 함수
+        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (변동 없음)
         function renderCart() {
             cartList.innerHTML = ''; 
             let total = 0;
@@ -536,7 +540,7 @@
             });
         }
         
-        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수
+        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수 (변동 없음)
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
@@ -575,10 +579,10 @@
             });
         }
 
-        // 7. 복사 버튼에 이벤트 리스너 연결
+        // 7. 복사 버튼에 이벤트 리스너 연결 (변동 없음)
         copyButton.addEventListener('click', copyCartContent);
 
-        // 페이지 로드 시 초기 실행
+        // 페이지 로드 시 초기 실행 (변동 없음)
         renderProducts();
         renderCart();
         
