@@ -309,13 +309,45 @@
 <body>
     <header>
         <h1 class="title">CP 작업대행소 🛠️</h1>
-        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!v10</p>
+        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!</p>
     </header>
 
     <div class="main-content">
         
         <div class="section-card">
             <h2>✨ 품목 목록 및 가격</h2>
+            
+            <script>
+                const KAKAO_CHAT_LINK = "https://a.to/25owDwD";
+                
+                const productData = [
+                    { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
+                    { name: "✅ 반글", price: 500, option: null },
+                    { name: "✅ 핵현엔", price: 500, option: null },
+                    { name: "✅ 핵윙", price: 500, option: null },
+                    { name: "✅ 핵바디킷", price: 500, option: null },
+                    { name: "✅ 루프박스", price: 500, option: null },
+                    { name: "✅ 루프탑", price: 500, option: null },
+                    { name: "✅ 루프랙", price: 500, option: null },
+                    { name: "✅ UFO", price: 500, option: null },
+                    { name: "✅ 반유엪", price: 500, option: null },
+                    { name: "✅ 범퍼제거", price: 500, option: null },
+                    { name: "✅ 크롬휠", price: 500, option: null },
+                    { name: "✅ 크롬유리", price: 500, option: null },
+                    { name: "✅ 크롬도색", price: 500, option: null },
+                    { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+                    { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+                    { name: "✅ 사이렌", price: 500, option: null },
+                    { name: "✅ 차량소환", price: 500, option: null },
+                    { name: "✅ 풀머니", price: 500, option: null },
+                    { name: "✅ 풀코인", price: 500, option: null },
+                    { name: "✅ 아이디 4글자", price: 500, option: null },
+                    { name: "✅ 아이디 6글자", price: 500, option: null },
+                    { name: "✅ 클랜 일일 미션 클리어", price: 500, option: null },
+                    { name: "✅ 패키지 언락", price: 4500, option: null },
+                    { name: "✅ 킹랭작업", price: 5900, option: null },
+                ];
+            </script>
             
             <div id="product-list" class="product-list">
             </div>
@@ -355,89 +387,32 @@
     
     <script>
         // ============================================
-        // 🔐 IP 암호화 함수 (카카오톡 봇과 100% 동일)
+        // 🔐 커스텀 Base64 암호화 함수 (브라우저용)
         // ============================================
-        const BASE62_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-        function encryptIP(ip) {
-            try {
-                const parts = ip.split('.').map(Number);
-                
-                // IP 유효성 검사
-                if (parts.length !== 4 || parts.some(p => p < 0 || p > 255 || isNaN(p))) {
-                    return "INVALID_IP";
-                }
-                
-                // 각 옥텟을 3자리로 패딩 (봇과 동일한 방식)
-                let combined = '';
-                for (let i = 0; i < parts.length; i++) {
-                    let str = parts[i].toString();
-                    while (str.length < 3) {
-                        str = '0' + str;
-                    }
-                    combined += str;
-                }
-                
-                // Base62 인코딩 (봇과 동일한 방식)
-                let num = parseInt(combined);
-                let encoded = '';
-                
-                if (num === 0) {
-                    encoded = BASE62_CHARS.charAt(0);
-                } else {
-                    while (num > 0) {
-                        encoded = BASE62_CHARS.charAt(num % 62) + encoded;
-                        num = Math.floor(num / 62);
-                    }
-                }
-                
-                // 체크섬 계산 (봇과 동일한 방식)
-                let checksum = 0;
-                for (let i = 0; i < parts.length; i++) {
-                    checksum = checksum ^ parts[i];
-                }
-                const checksumChar = BASE62_CHARS.charAt(checksum % 62);
-                
-                return checksumChar + encoded;
-            } catch (e) {
-                console.error('암호화 오류:', e);
-                return "ENCRYPT_ERROR";
+        const PAL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?";
+        const B64_STD = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        
+        // 표준 Base64 → 커스텀 팔레트
+        function toCustomAlphabet(b64) {
+            let out = "";
+            for (let i = 0; i < b64.length; i++) {
+                const ch = b64.charAt(i);
+                if (ch === "=") { out += "="; continue; }
+                const idx = B64_STD.indexOf(ch);
+                out += (idx >= 0 ? PAL.charAt(idx) : ch);
             }
+            return out;
+        }
+        
+        // 문자열을 커스텀 Base64로 암호화
+        function encryptMixed(plain) {
+            const b64 = btoa(unescape(encodeURIComponent(plain))); // UTF-8 → Base64
+            return toCustomAlphabet(b64);
         }
 
         // ============================================
-        // 기본 설정
+        // 장바구니 및 총액 계산 로직
         // ============================================
-        const KAKAO_CHAT_LINK = "https://a.to/25owDwD";
-        
-        const productData = [
-            { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
-            { name: "✅ 반글", price: 500, option: null },
-            { name: "✅ 핵현엔", price: 500, option: null },
-            { name: "✅ 핵윙", price: 500, option: null },
-            { name: "✅ 핵바디킷", price: 500, option: null },
-            { name: "✅ 루프박스", price: 500, option: null },
-            { name: "✅ 루프탑", price: 500, option: null },
-            { name: "✅ 루프랙", price: 500, option: null },
-            { name: "✅ UFO", price: 500, option: null },
-            { name: "✅ 반유엪", price: 500, option: null },
-            { name: "✅ 범퍼제거", price: 500, option: null },
-            { name: "✅ 크롬휠", price: 500, option: null },
-            { name: "✅ 크롬유리", price: 500, option: null },
-            { name: "✅ 크롬도색", price: 500, option: null },
-            { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
-            { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
-            { name: "✅ 사이렌", price: 500, option: null },
-            { name: "✅ 차량소환", price: 500, option: null },
-            { name: "✅ 풀머니", price: 500, option: null },
-            { name: "✅ 풀코인", price: 500, option: null },
-            { name: "✅ 아이디 4글자", price: 500, option: null },
-            { name: "✅ 아이디 6글자", price: 500, option: null },
-            { name: "✅ 클랜 일일 미션 클리어", price: 500, option: null },
-            { name: "✅ 패키지 언락", price: 4500, option: null },
-            { name: "✅ 킹랭작업", price: 5900, option: null },
-        ];
-
         const productListContainer = document.getElementById('product-list');
         const cartList = document.getElementById('cart-list');
         const totalPriceDisplay = document.getElementById('total-price');
@@ -448,18 +423,17 @@
         let cart = [];
         let currentVisitorIP = null;
 
-        // ⭐️ IP 주소를 가져와서 암호화하는 함수
+        // ⭐️ IP 주소를 가져오는 함수
         function getVisitorIP() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    const realIP = data.ip;
-                    currentVisitorIP = encryptIP(realIP); // 암호화된 IP 저장
-                    console.log("방문자 IP 주소 암호화 완료:", currentVisitorIP);
+                    currentVisitorIP = data.ip;
+                    console.log("방문자 IP 주소 추출 성공:", currentVisitorIP);
                 })
                 .catch(error => {
                     console.error('IP 주소 가져오기 실패:', error);
-                    currentVisitorIP = "IP추출실패";
+                    currentVisitorIP = "IP 추출 실패";
                 });
         }
 
@@ -610,17 +584,19 @@
             });
         }
 
-        // ⭐️ 암호화된 IP가 포함된 장바구니 내용 복사
+        // ⭐️ 장바구니 내용 복사 함수 (IP 암호화 적용)
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
                 return;
             }
 
-            const ipAddress = currentVisitorIP || 'IP추출중';
+            // ⭐️ IP 주소 암호화
+            const ipAddress = currentVisitorIP || 'IP 정보 없음';
+            const encryptedIP = encryptMixed(ipAddress); // 🔐 암호화 적용
 
             let copyText = "--- CP 작업대행소 주문 내용 ---\n\n";
-            copyText += `👤 사용자 식별코드: ${ipAddress}\n\n`; 
+            copyText += `👤 사용자 IP: ${encryptedIP}\n\n`; // 🔐 암호화된 IP 삽입
 
             let total = 0;
             
