@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CP 작업대행소 | 품목 및 견적</title>
+    <title>CP 작업대행소 | 프리미엄 견적</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght=300;400;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- 1. 기본 설정 및 디자인 변수 (다크 모드) --- */
         :root {
-            --bg-dark: #2C2F33; 
-            --bg-container: #36393F; 
-            --color-primary: #7289DA; 
-            --color-success: #43B581; 
-            --color-danger: #F04747; 
-            --color-text: #DCDDDE; 
-            --color-light-text: #B9BBBE; 
+            --bg-dark: #2C2F33;
+            --bg-container: #36393F;
+            --color-primary: #7289DA;
+            --color-success: #43B581;
+            --color-danger: #F04747;
+            --color-text: #DCDDDE;
+            --color-light-text: #B9BBBE;
         }
 
         body {
@@ -31,7 +31,7 @@
 
         /* --- 2. 헤더 및 제목 스타일 --- */
         header {
-            background-color: #23272A; 
+            background-color: #23272A;
             padding: 40px 20px;
             margin-bottom: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -52,7 +52,7 @@
             font-size: 3em;
             font-weight: 700;
             margin: 0;
-            animation: color-cycle 6s linear infinite; 
+            animation: color-cycle 6s linear infinite;
         }
 
         .subtitle {
@@ -65,7 +65,8 @@
         .main-content {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 0 20px 50px 20px;
+            /* 플로팅 버튼 공간 확보를 위해 패딩 증가 */
+            padding: 0 20px 100px 20px; 
             text-align: left;
         }
 
@@ -87,7 +88,7 @@
             font-size: 1.8em;
         }
 
-        /* --- 5. 상품 목록 스타일 (수정) --- */
+        /* --- 5. 상품 목록 스타일 --- */
         .product-list {
             display: flex;
             flex-direction: column;
@@ -96,8 +97,7 @@
 
         .product-item {
             display: flex;
-            /* 옵션 필드를 아랫줄로 내리기 위해 wrap 설정 */
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             background-color: #2F3136;
@@ -116,9 +116,8 @@
             align-items: flex-start;
             flex-grow: 1;
             justify-content: center;
-            /* 품목 이름과 가격이 옵션 위 한 줄에 위치하도록 */
-            width: 100%; 
-            margin-bottom: 5px; 
+            width: 100%;
+            margin-bottom: 5px;
         }
 
         .product-name {
@@ -134,9 +133,9 @@
             font-size: 0.95em;
         }
         
-        /* 옵션 선택 (새로운 위치 - 단독 한 줄) */
+        /* 옵션 선택 */
         .option-select {
-            width: 100%; /* 옵션 필드가 한 줄 전체를 차지하도록 */
+            width: 100%;
             margin-top: 5px;
             margin-bottom: 5px;
             padding: 8px;
@@ -146,13 +145,12 @@
             color: var(--color-text);
         }
         
-        /* 수량 입력과 버튼 그룹 (product-actions로 묶임) */
+        /* 수량 입력과 버튼 그룹 */
         .product-actions {
             display: flex;
             align-items: center;
             gap: 10px;
-            /* 우측 정렬 */
-            margin-left: auto; 
+            margin-left: auto;
         }
 
         /* 수량 입력 */
@@ -176,7 +174,7 @@
             cursor: pointer;
             font-weight: 700;
             transition: background-color 0.2s;
-            white-space: nowrap; 
+            white-space: nowrap;
         }
 
         .add-to-cart-btn:hover {
@@ -241,7 +239,7 @@
             font-size: 1.5em;
             font-weight: 700;
             color: #FFFFFF;
-            margin-bottom: 20px; 
+            margin-bottom: 20px;
         }
 
         .remove-btn {
@@ -260,7 +258,7 @@
         
         #copy-button {
             width: 100%;
-            background-color: #FAA61A; 
+            background-color: #FAA61A;
             color: #FFFFFF;
             border: none;
             padding: 12px;
@@ -274,17 +272,43 @@
         #copy-button:hover {
             background-color: #E69517;
         }
+        
+        /* ⭐️ 7. 플로팅 장바구니 요약 버튼 스타일 */
+        #floating-cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #FAA61A; /* 오렌지색 */
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px; /* 둥근 형태 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+            opacity: 0; /* 초기 숨김 */
+            pointer-events: none;
+            transform: translateY(50px);
+        }
 
-        /* --- 7. 모바일 최적화 --- */
+        #floating-cart-summary:hover {
+            background-color: #E69517;
+        }
+
+        #floating-cart-summary:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* --- 8. 모바일 최적화 --- */
         @media (max-width: 768px) {
             .title { font-size: 2.5em; }
             .section-card { padding: 20px; }
-            /* 모바일에서 product-item은 기본 wrap 상태 유지 */
-            
-            /* 옵션 선택 필드는 이제 100% 너비를 차지하므로 별도 조정 불필요 */
-            .product-actions { 
-                margin-left: 0;
-            }
+            .product-actions { margin-left: 0; }
         }
     </style>
 </head>
@@ -301,18 +325,11 @@
             
             <script>
                 // 카카오톡 오픈채팅 링크 정의
-                const KAKAO_CHAT_LINK = "https://open.kakao.com/me/httppfkakaocom_SdfwG";
+                const KAKAO_CHAT_LINK = "https://a.to/25owDwD"; // 실제 링크로 업데이트
                 
                 // 전체 품목 데이터 정의
                 const productData = [
-                    { 
-                        name: "✅ 핵엔", 
-                        price: 500, 
-                        option: { 
-                            label: "엔진 옵션 선택", 
-                            values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] 
-                        } 
-                    },
+                    { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
                     { name: "✅ 반글", price: 500, option: null },
                     { name: "✅ 핵현엔", price: 500, option: null },
                     { name: "✅ 핵윙", price: 500, option: null },
@@ -326,24 +343,8 @@
                     { name: "✅ 크롬휠", price: 500, option: null },
                     { name: "✅ 크롬유리", price: 500, option: null },
                     { name: "✅ 크롬도색", price: 500, option: null },
-                    
-                    { 
-                        name: "✅ 크롬캘리퍼", 
-                        price: 500, 
-                        option: { 
-                            label: "색상 선택", 
-                            values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] 
-                        } 
-                    },
-                    { 
-                        name: "✅ 크롬라이트", 
-                        price: 500, 
-                        option: { 
-                            label: "색상 선택", 
-                            values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] 
-                        } 
-                    },
-                    
+                    { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+                    { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
                     { name: "✅ 사이렌", price: 500, option: null },
                     { name: "✅ 차량소환", price: 500, option: null },
                     { name: "✅ 풀머니", price: 500, option: null },
@@ -357,7 +358,7 @@
             </script>
             
             <div id="product-list" class="product-list">
-                </div>
+            </div>
             
             <a href="https://a.to/25owDwD" target="_blank" class="inquiry-btn">
                 💬 핵작업 문의 (카카오톡 오픈채팅)
@@ -387,6 +388,11 @@
         </footer>
     </div>
     
+    <button id="floating-cart-summary" class="hidden">
+        💰 총액: <span id="floating-total-price">0원</span>
+    </button>
+
+    
     <script>
         // --- JavaScript를 이용한 장바구니 및 총액 계산 로직 ---
         const productListContainer = document.getElementById('product-list');
@@ -394,8 +400,24 @@
         const totalPriceDisplay = document.getElementById('total-price');
         const emptyCartMessage = document.getElementById('empty-cart-message');
         const copyButton = document.getElementById('copy-button');
+        const floatingCartSummary = document.getElementById('floating-cart-summary'); 
         
         let cart = []; // 장바구니 데이터를 저장할 배열
+        let currentVisitorIP = null; // ⭐️ IP 주소를 저장할 전역 변수
+
+        // ⭐️ IP 주소를 가져오는 함수 (페이지 로드 시 실행)
+        function getVisitorIP() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    currentVisitorIP = data.ip; // 전역 변수에 IP 저장
+                    console.log("방문자 IP 주소 추출 성공:", currentVisitorIP);
+                })
+                .catch(error => {
+                    console.error('IP 주소 가져오기 실패:', error);
+                    currentVisitorIP = "IP 추출 실패 (API 오류)";
+                });
+        }
 
         // 옵션 드롭다운 HTML 생성 함수
         function createOptionSelect(options) {
@@ -408,7 +430,7 @@
             return selectHtml;
         }
 
-        // 1. 품목 목록 동적 생성 (HTML 구조 변경 적용)
+        // 1. 품목 목록 동적 생성
         function renderProducts() {
             productListContainer.innerHTML = '';
             productData.forEach((product) => {
@@ -419,7 +441,6 @@
                 
                 let optionHtml = '';
                 if (product.option) {
-                    // 옵션이 있는 경우에만 HTML 생성
                     optionHtml = createOptionSelect(product.option);
                 }
 
@@ -428,7 +449,7 @@
                         <span class="product-name">${product.name}</span>
                         <span class="product-price">${product.price.toLocaleString()}원</span>
                     </div>
-                    ${optionHtml} 
+                    ${optionHtml}
                     
                     <div class="product-actions">
                         <input type="number" class="quantity-input" value="1" min="1">
@@ -438,43 +459,50 @@
                 productListContainer.appendChild(itemElement);
             });
             
-            // 2. 장바구니 담기 버튼 이벤트 리스너 추가 (목록 생성 후)
+            // 2. 장바구니 담기 버튼 이벤트 리스너 추가
             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const itemElement = e.target.closest('.product-item');
-                    const name = itemElement.getAttribute('data-name');
-                    const price = parseInt(itemElement.getAttribute('data-price'));
-                    
-                    // 수량 입력과 옵션 선택 요소는 itemElement 내에서 직접 찾음
-                    const quantityInput = itemElement.querySelector('.quantity-input');
-                    const selectElement = itemElement.querySelector('.option-select');
-                    
-                    const quantity = parseInt(quantityInput.value);
-                    let optionValue = null;
-
-                    if (selectElement) {
-                        optionValue = selectElement.value;
-                        if (!optionValue) {
-                            alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
-                            return;
-                        }
-                    }
-
-                    if (quantity > 0) {
-                        addToCart(name, price, quantity, optionValue);
-                        alert(`${name}${optionValue ? ' (' + optionValue + ')' : ''} ${quantity}개가 장바구니에 담겼습니다!`);
-                        quantityInput.value = 1; 
-                        if (selectElement) {
-                             selectElement.selectedIndex = 0; 
-                        }
-                    } else {
-                        alert('수량을 1개 이상으로 설정해주세요.');
-                    }
-                });
+                button.addEventListener('click', handleAddToCart);
             });
         }
-        
-        // 3. 장바구니에 상품을 추가하는 함수 (변동 없음)
+
+        // 2-1. 장바구니 담기 처리 함수 (스크롤 로직 포함)
+        function handleAddToCart(e) {
+            const itemElement = e.target.closest('.product-item');
+            const name = itemElement.getAttribute('data-name');
+            const price = parseInt(itemElement.getAttribute('data-price'));
+            
+            const quantityInput = itemElement.querySelector('.quantity-input');
+            const selectElement = itemElement.querySelector('.option-select');
+            
+            const quantity = parseInt(quantityInput.value);
+            let optionValue = null;
+
+            if (selectElement) {
+                optionValue = selectElement.value;
+                if (!optionValue) {
+                    alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
+                    return;
+                }
+            }
+
+            if (quantity > 0) {
+                addToCart(name, price, quantity, optionValue);
+                alert(`${name}${optionValue ? ' (' + optionValue + ')' : ''} ${quantity}개가 장바구니에 담겼습니다!`);
+                quantityInput.value = 1;
+                if (selectElement) {
+                    selectElement.selectedIndex = 0;
+                }
+                
+                // 품목 추가 후 장바구니 섹션으로 부드럽게 스크롤
+                const cartSection = document.querySelector('.cart-section');
+                cartSection.scrollIntoView({ behavior: 'smooth' });
+
+            } else {
+                alert('수량을 1개 이상으로 설정해주세요.');
+            }
+        }
+
+        // 3. 장바구니에 상품을 추가하는 함수
         function addToCart(name, price, quantity, optionValue) {
             const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
             const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
@@ -488,13 +516,13 @@
             renderCart();
         }
 
-        // 4. 장바구니에서 상품을 제거하는 함수 (변동 없음)
+        // 4. 장바구니에서 상품을 제거하는 함수
         function removeFromCart(index) {
             cart.splice(index, 1);
             renderCart();
         }
 
-        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (변동 없음)
+        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (플로팅 바 업데이트 로직 포함)
         function renderCart() {
             cartList.innerHTML = ''; 
             let total = 0;
@@ -504,6 +532,7 @@
                 cartList.appendChild(emptyCartMessage);
                 copyButton.disabled = true; 
                 copyButton.textContent = '장바구니가 비어 있습니다.';
+                floatingCartSummary.classList.add('hidden'); // 플로팅 바 숨김
             } else {
                 emptyCartMessage.style.display = 'none';
                 copyButton.disabled = false; 
@@ -513,8 +542,8 @@
                     const itemTotal = item.price * item.quantity;
                     total += itemTotal;
                     
-                    const displayName = item.optionValue 
-                        ? `${item.name} (${item.optionValue})` 
+                    const displayName = item.optionValue
+                        ? `${item.name} (${item.optionValue})`
                         : item.name;
 
                     const itemElement = document.createElement('div');
@@ -528,9 +557,16 @@
                     `;
                     cartList.appendChild(itemElement);
                 });
+                
+                // 장바구니에 내용이 있을 때 플로팅 바 표시 (스크롤 이벤트에서도 처리)
+                if (window.scrollY > 100) { 
+                    floatingCartSummary.classList.remove('hidden');
+                }
             }
 
             totalPriceDisplay.textContent = total.toLocaleString() + '원';
+            // 플로팅 바 총액 업데이트
+            document.getElementById('floating-total-price').textContent = total.toLocaleString() + '원'; 
             
             document.querySelectorAll('.remove-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -539,15 +575,21 @@
                 });
             });
         }
-        
-        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수 (변동 없음)
+
+        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수 (IP 추출 정보 추가)
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
                 return;
             }
 
+            // ⭐ 추출된 IP 주소를 가져오거나, 추출 실패 메시지를 사용합니다.
+            const ipAddress = currentVisitorIP || 'IP 정보 없음 (추출 시도 중/실패)';
+
             let copyText = "--- CP 작업대행소 주문 내용 ---\n\n";
+            // ⭐ 주문 내용 최상단에 IP 주소 추가
+            copyText += `👤 사용자 IP: ${ipAddress}\n\n`; 
+
             let total = 0;
             
             cart.forEach(item => {
@@ -579,10 +621,29 @@
             });
         }
 
-        // 7. 복사 버튼에 이벤트 리스너 연결 (변동 없음)
+        // 7. 복사 버튼에 이벤트 리스너 연결
         copyButton.addEventListener('click', copyCartContent);
+        
+        // 플로팅 버튼 클릭 시 장바구니로 자동 스크롤 기능 추가
+        floatingCartSummary.addEventListener('click', () => {
+            const cartSection = document.querySelector('.cart-section');
+            cartSection.scrollIntoView({ behavior: 'smooth' });
+        });
 
-        // 페이지 로드 시 초기 실행 (변동 없음)
+        // 스크롤 시 플로팅 버튼 표시/숨김 처리 추가
+        window.addEventListener('scroll', () => {
+            if (cart.length > 0) {
+                // 스크롤이 헤더 영역보다 아래로 내려갔을 때 표시 (예: 100px)
+                if (window.scrollY > 100) { 
+                    floatingCartSummary.classList.remove('hidden');
+                } else {
+                    floatingCartSummary.classList.add('hidden');
+                }
+            }
+        });
+
+        // 페이지 로드 시 초기 실행
+        getVisitorIP(); // ⭐️ IP 주소 추출 시작
         renderProducts();
         renderCart();
         
