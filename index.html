@@ -29,6 +29,24 @@
             min-height: 100vh;
         }
 
+        /* --- 1-1. 워터마크 스타일 추가 --- */
+        body::before {
+            content: "@Maker"; /* 워터마크 텍스트 */
+            position: fixed; /* 뷰포트에 고정 */
+            top: 50%; /* 수직 중앙 */
+            left: 50%; /* 수평 중앙 */
+            transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
+            
+            /* 스타일 설정 */
+            font-size: 15em; /* 매우 크게 설정 */
+            font-weight: 700;
+            color: #4F545C; /* 배경에 묻히는 어두운 회색 */
+            opacity: 0.05; /* 불투명도 설정 (거슬리지 않게 5%로 낮춤) */
+            pointer-events: none; /* 클릭 이벤트 무시 */
+            z-index: -1; /* 다른 콘텐츠 뒤로 보내기 */
+            white-space: nowrap; /* 줄바꿈 방지 */
+        }
+        
         /* --- 2. 헤더 및 제목 스타일 --- */
         header {
             background-color: #23272A;
@@ -75,7 +93,6 @@
         /* 텍스트가 흘러가는 애니메이션 정의 */
         @keyframes marquee-animation {
             0% { transform: translateX(100%); }
-            /* 애니메이션 시간 15s -> 25s로 늘려 속도를 늦춤 */
             100% { transform: translateX(-100%); } 
         }
 
@@ -84,7 +101,7 @@
             display: flex; 
             white-space: nowrap;
             
-            /* 애니메이션 적용: 속도 늦춤 */
+            /* 애니메이션 적용: 속도 10s 유지 (빠른 속도) */
             animation: marquee-animation 10s linear infinite; 
             
             font-size: 1.5em; /* 글씨 크기 확대 */
