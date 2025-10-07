@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CP 작업대행소 | 품목 및 견적</title>
+    <title>CP 작업대행소 | 프리미엄 견적</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. 기본 설정 및 디자인 변수 (다크 모드) --- */
+        /* --- 1. 기본 설정 및 디자인 변수 (다크 모드 & 애플 스타일) --- */
         :root {
-            --bg-dark: #2C2F33; 
-            --bg-container: #36393F; 
-            --color-primary: #7289DA; 
-            --color-success: #43B581; 
-            --color-danger: #F04747; 
-            --color-text: #DCDDDE; 
-            --color-light-text: #B9BBBE; 
+            --bg-dark: #1C1C1E; /* 미드나잇 블랙 */
+            --bg-container: #2C2C2E; /* 약간 밝은 배경 */
+            --color-primary: #007AFF; /* 애플 블루 */
+            --color-success: #34C759; /* 애플 그린 */
+            --color-danger: #FF3B30; /* 애플 레드 */
+            --color-text: #F2F2F7; /* 밝은 텍스트 */
+            --color-light-text: #98989A; /* 보조 텍스트 */
+            --color-accent: #FF9500; /* 오렌지 액센트 (장바구니) */
         }
 
         body {
@@ -27,221 +28,247 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            /* 전역적으로 부드러운 전환 효과 추가 */
+            transition: background-color 0.5s ease;
         }
 
         /* --- 2. 헤더 및 제목 스타일 --- */
         header {
-            background-color: #23272A; 
-            padding: 40px 20px;
+            background-color: #2C2C2E; /* 배경과 동일하게 설정하여 깔끔함 강조 */
+            padding: 50px 20px 30px 20px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            /* 그림자는 하단에만 은은하게 */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            /* 상단 헤더에 블러 효과 추가 (애플의 '머터리얼' 느낌) */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky; /* 스크롤 시 상단에 고정 */
+            top: 0;
+            z-index: 999;
         }
 
-        /* 🌈 실시간 색상 변경 애니메이션 정의 */
+        /* 🌈 제목 색상 순환 애니메이션 (기존 유지) */
         @keyframes color-cycle {
-            0% { color: #FF0000; } /* 빨강 */
-            16% { color: #FFA500; } /* 주황 */
-            32% { color: #FFFF00; } /* 노랑 */
-            48% { color: #00FF00; } /* 초록 */
-            64% { color: #00BFFF; } /* 하늘색 */
-            80% { color: #8A2BE2; } /* 파랑/보라 */
-            100% { color: #FF0000; } /* 빨강으로 돌아가 부드럽게 연결 */
+            0% { color: #FF4500; }
+            50% { color: #FFD700; }
+            100% { color: #FF4500; }
         }
 
         .title {
             font-size: 3em;
-            font-weight: 700;
+            font-weight: 800;
             margin: 0;
-            animation: color-cycle 6s linear infinite; 
+            animation: color-cycle 4s linear infinite; /* 속도 조정 */
         }
 
         .subtitle {
             font-size: 1.2em;
             color: var(--color-light-text);
             margin-top: 10px;
+            font-weight: 300;
         }
 
         /* --- 3. 메인 콘텐츠 컨테이너 --- */
         .main-content {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 0 20px 50px 20px;
+            padding: 0 20px 100px 20px; /* 플로팅 바를 위한 하단 여백 추가 */
             text-align: left;
         }
 
-        /* --- 4. 섹션 스타일 (카드) --- */
+        /* --- 4. 섹션 스타일 (카드 - 애플 스타일) --- */
         .section-card {
             background-color: var(--bg-container);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            /* 더 은은하고 입체적인 그림자 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* 부드러운 전환 */
             margin-bottom: 30px;
+        }
+        .section-card:hover {
+            transform: translateY(-3px); /* 마우스 오버 시 살짝 떠오르는 느낌 */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); 
         }
 
         .section-card h2 {
             color: var(--color-primary);
-            border-bottom: 2px solid #4F545C;
+            border-bottom: 1px solid #48484A; /* 얇고 깔끔한 구분선 */
             padding-bottom: 10px;
             margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.8em;
+            font-weight: 700;
         }
 
-        /* --- 5. 상품 목록 스타일 (수정) --- */
+        /* ✨ 품목 목록 제목 반짝임 효과 */
+        @keyframes sparkle-effect {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        #sparkle-emoji {
+            display: inline-block;
+            color: #FFD700; /* 황금색 */
+            animation: sparkle-effect 2s ease-in-out infinite;
+            margin-right: 5px;
+        }
+
+        /* --- 5. 상품 목록 스타일 --- */
         .product-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px; /* 간격 확대 */
         }
 
         .product-item {
             display: flex;
-            /* 옵션 필드를 아랫줄로 내리기 위해 wrap 설정 */
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            background-color: #2F3136;
-            padding: 15px 20px;
-            border-radius: 8px;
-            transition: background-color 0.2s;
+            background-color: #3A3A3C; /* 조금 더 어두운 배경 */
+            padding: 18px 25px;
+            border-radius: 10px;
+            transition: all 0.2s ease-out; /* 부드러운 마우스 오버 전환 */
+            cursor: default;
         }
 
         .product-item:hover {
-            background-color: #3B3E42;
+            background-color: #48484A;
+            transform: translateY(-2px); /* 항목도 살짝 떠오르게 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .product-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            flex-grow: 1;
-            justify-content: center;
-            /* 품목 이름과 가격이 옵션 위 한 줄에 위치하도록 */
-            width: 100%; 
-            margin-bottom: 5px; 
+        /* 품목 추가 시 애니메이션 하이라이트 */
+        @keyframes item-add-pulse {
+            0% { background-color: var(--color-success); transform: scale(1); }
+            100% { background-color: #3A3A3C; transform: scale(1); }
+        }
+        .item-highlight {
+            animation: item-add-pulse 0.4s ease-out; 
         }
 
         .product-name {
             font-weight: 700;
             font-size: 1.1em;
-            color: #FFFFFF;
-            margin-bottom: 3px;
+            color: var(--color-text);
         }
-
         .product-price {
             color: var(--color-success);
             font-weight: 400;
             font-size: 0.95em;
+            margin-left: 10px;
         }
         
-        /* 옵션 선택 (새로운 위치 - 단독 한 줄) */
+        /* 옵션 선택 */
         .option-select {
-            width: 100%; /* 옵션 필드가 한 줄 전체를 차지하도록 */
-            margin-top: 5px;
-            margin-bottom: 5px;
-            padding: 8px;
-            border: 1px solid #4F545C;
-            border-radius: 5px;
-            background-color: #40444B;
+            width: 100%; 
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #48484A;
+            border-radius: 7px;
+            background-color: #48484A;
             color: var(--color-text);
+            appearance: none; /* 기본 화살표 숨김 */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%2398989A" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.018 2.345 4 3.204 4h9.592c.86 0 1.32 1.018.753 1.658L8.753 11.14a1 1 0 0 1-1.506 0z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 16px;
         }
         
-        /* 수량 입력과 버튼 그룹 (product-actions로 묶임) */
+        /* 수량 입력과 버튼 그룹 */
         .product-actions {
             display: flex;
             align-items: center;
             gap: 10px;
-            /* 우측 정렬 */
-            margin-left: auto; 
+            margin-left: auto;
+            margin-top: 10px;
         }
 
         /* 수량 입력 */
         .quantity-input {
             width: 50px;
             padding: 8px;
-            border: 1px solid #4F545C;
+            border: 1px solid #48484A;
             border-radius: 5px;
-            background-color: #40444B;
+            background-color: #48484A;
             color: var(--color-text);
             text-align: center;
         }
 
         /* 장바구니 버튼 */
         .add-to-cart-btn {
-            background-color: var(--color-success);
+            background-color: var(--color-primary);
             color: #FFFFFF;
             border: none;
             padding: 10px 15px;
-            border-radius: 5px;
+            border-radius: 7px;
             cursor: pointer;
             font-weight: 700;
             transition: background-color 0.2s;
-            white-space: nowrap; 
+            white-space: nowrap;
         }
 
         .add-to-cart-btn:hover {
-            background-color: #3AA876;
+            background-color: #0066CC;
         }
         
         .inquiry-btn {
-            display: block;
-            background-color: var(--color-primary);
-            color: #FFFFFF;
-            text-decoration: none;
+            background-color: #FAE100; /* 카카오톡 옐로우 */
+            color: #3C1E1E; /* 카톡 기본 텍스트 색상 */
             padding: 15px;
             border-radius: 8px;
             font-weight: 700;
             font-size: 1.2em;
             margin-top: 20px;
+            display: block;
+            text-decoration: none;
             transition: background-color 0.2s;
             text-align: center;
         }
 
         .inquiry-btn:hover {
-            background-color: #677BC4;
+            background-color: #E0C800;
         }
 
         /* --- 6. 장바구니 및 총계산 스타일 --- */
         .cart-section h2 {
-            color: #FAA61A;
-            border-bottom-color: #FAA61A;
+            color: var(--color-accent); /* 오렌지 액센트 */
+            border-bottom-color: #48484A;
         }
 
         .cart-list {
-            border: 1px solid #4F545C;
+            border: 1px solid #48484A;
             border-radius: 8px;
             padding: 10px;
-            background-color: #2F3136;
+            background-color: #3A3A3C;
         }
         
-        #empty-cart-message {
-            margin: 10px;
-            padding: 10px;
-            font-style: italic;
+        /* 장바구니 아이템 등장 애니메이션 */
+        @keyframes cart-item-fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px dashed #4F545C;
-        }
-
-        .cart-item:last-child {
-            border-bottom: none;
+            padding: 12px 0;
+            border-bottom: 1px dashed #48484A;
+            animation: cart-item-fade-in 0.4s ease-out; /* 부드러운 등장 효과 */
         }
 
         .cart-total {
             margin-top: 20px;
             padding-top: 15px;
-            border-top: 2px solid var(--color-primary);
+            border-top: 2px solid var(--color-accent);
             display: flex;
             justify-content: space-between;
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #FFFFFF;
-            margin-bottom: 20px; 
+            font-size: 1.8em; /* 굵게 */
+            font-weight: 800; /* 더 굵게 */
+            color: var(--color-text);
+            margin-bottom: 20px;
         }
 
         .remove-btn {
@@ -260,30 +287,67 @@
         
         #copy-button {
             width: 100%;
-            background-color: #FAA61A; 
+            background-color: var(--color-accent); 
             color: #FFFFFF;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 10px;
             font-weight: 700;
             font-size: 1.1em;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         #copy-button:hover {
-            background-color: #E69517;
+            background-color: #E08C00;
+            transform: translateY(-2px);
         }
 
-        /* --- 7. 모바일 최적화 --- */
+        /* --- 7. 플로팅 장바구니 요약 버튼 스타일 --- */
+        #floating-cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--color-accent); 
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px; 
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); 
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #floating-cart-summary:hover {
+            transform: scale(1.03) translateY(-5px);
+            background-color: #E08C00;
+        }
+
+        /* 장바구니가 비어있을 때는 숨김 */
+        #floating-cart-summary.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(50px);
+        }
+
+        /* --- 8. 모바일 최적화 --- */
         @media (max-width: 768px) {
             .title { font-size: 2.5em; }
             .section-card { padding: 20px; }
-            /* 모바일에서 product-item은 기본 wrap 상태 유지 */
-            
-            /* 옵션 선택 필드는 이제 100% 너비를 차지하므로 별도 조정 불필요 */
             .product-actions { 
                 margin-left: 0;
+                width: 100%; /* 모바일에서 액션 버튼을 아래로 분리 */
+                justify-content: flex-end;
+            }
+            .product-item { padding: 15px; }
+            .cart-total { font-size: 1.5em; }
+            #floating-cart-summary {
+                font-size: 1em;
+                padding: 12px 20px;
             }
         }
     </style>
@@ -297,7 +361,7 @@
     <div class="main-content">
         
         <div class="section-card">
-            <h2>✨ 품목 목록 및 가격</h2>
+            <h2><span id="sparkle-emoji">✨</span> 품목 목록 및 가격</h2>
             
             <script>
                 // 카카오톡 오픈채팅 링크 정의
@@ -305,14 +369,7 @@
                 
                 // 전체 품목 데이터 정의
                 const productData = [
-                    { 
-                        name: "✅ 핵엔", 
-                        price: 500, 
-                        option: { 
-                            label: "엔진 옵션 선택", 
-                            values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] 
-                        } 
-                    },
+                    { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
                     { name: "✅ 반글", price: 500, option: null },
                     { name: "✅ 핵현엔", price: 500, option: null },
                     { name: "✅ 핵윙", price: 500, option: null },
@@ -326,24 +383,8 @@
                     { name: "✅ 크롬휠", price: 500, option: null },
                     { name: "✅ 크롬유리", price: 500, option: null },
                     { name: "✅ 크롬도색", price: 500, option: null },
-                    
-                    { 
-                        name: "✅ 크롬캘리퍼", 
-                        price: 500, 
-                        option: { 
-                            label: "색상 선택", 
-                            values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] 
-                        } 
-                    },
-                    { 
-                        name: "✅ 크롬라이트", 
-                        price: 500, 
-                        option: { 
-                            label: "색상 선택", 
-                            values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] 
-                        } 
-                    },
-                    
+                    { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+                    { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
                     { name: "✅ 사이렌", price: 500, option: null },
                     { name: "✅ 차량소환", price: 500, option: null },
                     { name: "✅ 풀머니", price: 500, option: null },
@@ -356,11 +397,10 @@
                 ];
             </script>
             
-            <div id="product-list" class="product-list">
-                </div>
+            <div id="product-list" class="product-list"></div>
             
             <a href="https://a.to/25owDwD" target="_blank" class="inquiry-btn">
-                💬 핵작업 문의 (카카오톡 오픈채팅)
+                💬 문의하기 (카카오톡 오픈채팅)
             </a>
             
         </div>
@@ -387,6 +427,10 @@
         </footer>
     </div>
     
+    <button id="floating-cart-summary" class="hidden">
+        💰 현재 총액: <span id="floating-total-price">0원</span>
+    </button>
+    
     <script>
         // --- JavaScript를 이용한 장바구니 및 총액 계산 로직 ---
         const productListContainer = document.getElementById('product-list');
@@ -394,6 +438,7 @@
         const totalPriceDisplay = document.getElementById('total-price');
         const emptyCartMessage = document.getElementById('empty-cart-message');
         const copyButton = document.getElementById('copy-button');
+        const floatingCartSummary = document.getElementById('floating-cart-summary');
         
         let cart = []; // 장바구니 데이터를 저장할 배열
 
@@ -408,7 +453,7 @@
             return selectHtml;
         }
 
-        // 1. 품목 목록 동적 생성 (HTML 구조 변경 적용)
+        // 1. 품목 목록 동적 생성
         function renderProducts() {
             productListContainer.innerHTML = '';
             productData.forEach((product) => {
@@ -419,7 +464,6 @@
                 
                 let optionHtml = '';
                 if (product.option) {
-                    // 옵션이 있는 경우에만 HTML 생성
                     optionHtml = createOptionSelect(product.option);
                 }
 
@@ -428,7 +472,7 @@
                         <span class="product-name">${product.name}</span>
                         <span class="product-price">${product.price.toLocaleString()}원</span>
                     </div>
-                    ${optionHtml} 
+                    ${optionHtml}
                     
                     <div class="product-actions">
                         <input type="number" class="quantity-input" value="1" min="1">
@@ -438,43 +482,56 @@
                 productListContainer.appendChild(itemElement);
             });
             
-            // 2. 장바구니 담기 버튼 이벤트 리스너 추가 (목록 생성 후)
+            // 2. 장바구니 담기 버튼 이벤트 리스너 추가
             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const itemElement = e.target.closest('.product-item');
-                    const name = itemElement.getAttribute('data-name');
-                    const price = parseInt(itemElement.getAttribute('data-price'));
-                    
-                    // 수량 입력과 옵션 선택 요소는 itemElement 내에서 직접 찾음
-                    const quantityInput = itemElement.querySelector('.quantity-input');
-                    const selectElement = itemElement.querySelector('.option-select');
-                    
-                    const quantity = parseInt(quantityInput.value);
-                    let optionValue = null;
-
-                    if (selectElement) {
-                        optionValue = selectElement.value;
-                        if (!optionValue) {
-                            alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
-                            return;
-                        }
-                    }
-
-                    if (quantity > 0) {
-                        addToCart(name, price, quantity, optionValue);
-                        alert(`${name}${optionValue ? ' (' + optionValue + ')' : ''} ${quantity}개가 장바구니에 담겼습니다!`);
-                        quantityInput.value = 1; 
-                        if (selectElement) {
-                             selectElement.selectedIndex = 0; 
-                        }
-                    } else {
-                        alert('수량을 1개 이상으로 설정해주세요.');
-                    }
-                });
+                button.addEventListener('click', handleAddToCart);
             });
         }
         
-        // 3. 장바구니에 상품을 추가하는 함수 (변동 없음)
+        // 장바구니 담기 처리 함수 (애니메이션 및 스크롤 포함)
+        function handleAddToCart(e) {
+            const itemElement = e.target.closest('.product-item');
+            const name = itemElement.getAttribute('data-name');
+            const price = parseInt(itemElement.getAttribute('data-price'));
+            
+            const quantityInput = itemElement.querySelector('.quantity-input');
+            const selectElement = itemElement.querySelector('.option-select');
+            
+            const quantity = parseInt(quantityInput.value);
+            let optionValue = null;
+
+            if (selectElement) {
+                optionValue = selectElement.value;
+                if (!optionValue) {
+                    alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
+                    return;
+                }
+            }
+
+            if (quantity > 0) {
+                addToCart(name, price, quantity, optionValue);
+                
+                // 품목 추가 애니메이션 적용
+                itemElement.classList.add('item-highlight');
+                setTimeout(() => {
+                    itemElement.classList.remove('item-highlight');
+                }, 400); 
+
+                quantityInput.value = 1;
+                if (selectElement) {
+                     selectElement.selectedIndex = 0;
+                }
+                
+                // 장바구니 담기 후 장바구니 섹션으로 부드럽게 스크롤
+                const cartSection = document.querySelector('.cart-section');
+                cartSection.scrollIntoView({ behavior: 'smooth' });
+
+            } else {
+                alert('수량을 1개 이상으로 설정해주세요.');
+            }
+        }
+
+        // 3. 장바구니에 상품을 추가하는 함수
         function addToCart(name, price, quantity, optionValue) {
             const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
             const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
@@ -488,13 +545,13 @@
             renderCart();
         }
 
-        // 4. 장바구니에서 상품을 제거하는 함수 (변동 없음)
+        // 4. 장바구니에서 상품을 제거하는 함수
         function removeFromCart(index) {
             cart.splice(index, 1);
             renderCart();
         }
 
-        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (변동 없음)
+        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (플로팅 바 업데이트 포함)
         function renderCart() {
             cartList.innerHTML = ''; 
             let total = 0;
@@ -504,6 +561,7 @@
                 cartList.appendChild(emptyCartMessage);
                 copyButton.disabled = true; 
                 copyButton.textContent = '장바구니가 비어 있습니다.';
+                floatingCartSummary.classList.add('hidden'); // 플로팅 바 숨김
             } else {
                 emptyCartMessage.style.display = 'none';
                 copyButton.disabled = false; 
@@ -513,8 +571,8 @@
                     const itemTotal = item.price * item.quantity;
                     total += itemTotal;
                     
-                    const displayName = item.optionValue 
-                        ? `${item.name} (${item.optionValue})` 
+                    const displayName = item.optionValue
+                        ? `${item.name} (${item.optionValue})`
                         : item.name;
 
                     const itemElement = document.createElement('div');
@@ -522,7 +580,7 @@
                     itemElement.innerHTML = `
                         <span>${displayName} (${item.quantity}개)</span>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <span style="color: #43B581;">${itemTotal.toLocaleString()}원</span>
+                            <span style="color: var(--color-success);">${itemTotal.toLocaleString()}원</span>
                             <button class="remove-btn" data-index="${index}">제거</button>
                         </div>
                     `;
@@ -531,6 +589,7 @@
             }
 
             totalPriceDisplay.textContent = total.toLocaleString() + '원';
+            document.getElementById('floating-total-price').textContent = total.toLocaleString() + '원'; 
             
             document.querySelectorAll('.remove-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -540,7 +599,7 @@
             });
         }
         
-        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수 (변동 없음)
+        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
@@ -563,26 +622,40 @@
             copyText += `💰 총 결제 금액: ${total.toLocaleString()}원\n`;
             copyText += `\n(위 내용을 오픈채팅방에 붙여넣기 후 문의해주세요.)`;
 
-            // 1. 클립보드에 복사 시도
+            // 클립보드 복사 후 카카오톡 이동
             navigator.clipboard.writeText(copyText).then(() => {
                 alert('✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
-                
-                // 2. 복사 성공 시 카카오톡 오픈채팅 링크로 이동
                 window.location.href = KAKAO_CHAT_LINK;
 
             }).catch(err => {
                 console.error('클립보드 복사 실패: ', err);
                 alert('⚠️ 클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요.\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
-                
-                // 3. 복사 실패 시에도 카카오톡 오픈채팅 링크로 이동
                 window.location.href = KAKAO_CHAT_LINK;
             });
         }
 
-        // 7. 복사 버튼에 이벤트 리스너 연결 (변동 없음)
+        // 7. 이벤트 리스너 연결
         copyButton.addEventListener('click', copyCartContent);
 
-        // 페이지 로드 시 초기 실행 (변동 없음)
+        // 플로팅 버튼 클릭 시 장바구니로 자동 스크롤 기능
+        floatingCartSummary.addEventListener('click', () => {
+            const cartSection = document.querySelector('.cart-section');
+            cartSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 스크롤 시 플로팅 버튼 표시/숨김 처리
+        window.addEventListener('scroll', () => {
+            if (cart.length > 0) {
+                // 헤더 영역보다 아래로 스크롤했을 때만 플로팅 바를 표시합니다.
+                if (window.scrollY > 150) { 
+                    floatingCartSummary.classList.remove('hidden');
+                } else {
+                    floatingCartSummary.classList.add('hidden');
+                }
+            }
+        });
+
+        // 페이지 로드 시 초기 실행
         renderProducts();
         renderCart();
         
