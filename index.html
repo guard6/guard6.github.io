@@ -1,102 +1,144 @@
-<style>
-/* --- 전체 스타일 (디스코드 다크 테마 유지) --- */
-body {
-    font-family: 'Noto Sans KR', sans-serif;
-    text-align: center;
-    padding: 50px 20px;
-    background-color: #2C2F33; 
-    color: #DCDDDE; 
-    margin: 0;
-}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CP소통방 공식 홍보 게시판</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 
-/* --- 제목 스타일 --- */
-.title {
-    font-size: 2.5em;
-    color: #FFFFFF; 
-    margin-bottom: 5px;
-    font-weight: 700;
-}
+    <style>
+        /* --- 전체 스타일 (디스코드 다크 테마 유지) --- */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #2C2F33; 
+            color: #DCDDDE; 
+            margin: 0;
+        }
 
-.subtitle {
-    font-size: 1.1em;
-    color: #B9BBBE; 
-    margin-bottom: 40px;
-}
+        /* --- 제목 스타일 --- */
+        .title {
+            font-size: 2.5em;
+            color: #FFFFFF; 
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
 
-/* --- 컨테이너 (홍보물 영역) 스타일 --- */
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: left;
-    padding: 30px;
-    background-color: #36393F; 
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
-}
+        .subtitle {
+            font-size: 1.1em;
+            color: #B9BBBE; 
+            margin-bottom: 40px;
+        }
 
-.container h2 {
-    color: #7289DA; 
-    border-bottom: 2px solid #4F545C;
-    padding-bottom: 10px;
-    margin-bottom: 20px; /* 간격 축소 */
-}
+        /* --- 컨테이너 (홍보물 영역) 스타일 --- */
+        .container {
+            max-width: 1200px; /* 가로 배치를 위해 최대 너비를 넓힙니다 */
+            margin: 0 auto;
+            text-align: left;
+            padding: 30px;
+            background-color: #36393F; 
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
+            
+            /* 📢 가로 배치 핵심 코드: Flexbox 적용 */
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px;       
+            justify-content: flex-start; 
+        }
 
-/* --- 개별 홍보물 스타일 (간결하게 수정) --- */
-.promo-item {
-    background-color: #2F3136; 
-    padding: 15px; /* 패딩 축소 */
-    margin-bottom: 15px; /* 간격 축소 */
-    border-radius: 6px;
-    border-left: 4px solid #43B581; 
-    transition: background-color 0.2s;
-}
+        .container h2 {
+            width: 100%; /* 제목이 가로 전체를 차지하도록 */
+            color: #7289DA; 
+            border-bottom: 2px solid #4F545C;
+            padding-bottom: 10px;
+            margin-bottom: 20px; 
+        }
 
-.promo-item:hover {
-    background-color: #393C41; 
-}
+        /* --- 개별 홍보물 스타일 (가로 배치용) --- */
+        .promo-item {
+            flex: 1 1 300px; 
+            min-width: 300px; 
+            max-width: calc(33.33% - 20px); /* 3개씩 배치되도록 최대 폭 설정 */
+            
+            background-color: #2F3136; 
+            padding: 15px;
+            /* margin-bottom은 flex 컨테이너의 gap이 대신합니다. */
+            border-radius: 6px;
+            border-left: 4px solid #43B581; 
+            transition: background-color 0.2s;
+            /* 🚨 고정 높이를 주지 않아 내용 길이에 따라 항목의 높이가 달라집니다. */
+        }
 
-.promo-item h3 {
-    margin-top: 0;
-    color: #FFFFFF;
-    font-size: 1.2em; /* 폰트 크기 약간 축소 */
-    margin-bottom: 5px; /* 간격 축소 */
-}
+        .promo-item:hover {
+            background-color: #393C41; 
+        }
 
-.promo-item p {
-    color: #B9BBBE; /* 본문 색상을 약간 연하게 */
-    font-size: 0.95em;
-    margin-bottom: 8px; /* 문단 간격 축소 */
-}
+        .promo-item h3 {
+            margin-top: 0;
+            color: #FFFFFF;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
 
-/* --- 경고/링크 스타일 --- */
-.warning {
-    color: #F04747; 
-    font-weight: bold;
-    margin-top: 5px; /* 간격 축소 */
-}
+        .promo-item p {
+            color: #B9BBBE; 
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            /* 수동 홍보물의 경고 문구와 자동 등록 내용의 p 태그를 분리 */
+        }
 
-.promo-item a {
-    display: inline-block;
-    color: #FFFFFF;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 10px; /* 간격 축소 */
-    background-color: #7289DA; 
-    padding: 8px 15px; /* 버튼 크기 약간 축소 */
-    border-radius: 4px;
-    transition: background-color 0.2s;
-}
+        /* --- 경고/링크 스타일 --- */
+        .warning {
+            color: #F04747; 
+            font-weight: bold;
+            margin-top: 5px; 
+        }
 
-.promo-item a:hover {
-    background-color: #677BC4; 
-}
-</style>
+        .promo-item a {
+            display: block; /* 링크 버튼을 블록으로 만들어 너비를 채우고 바닥에 붙이기 쉽게 */
+            text-align: center;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px; 
+            background-color: #7289DA; 
+            padding: 8px 15px; 
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            
+            /* 버튼을 항목 하단에 고정하고 싶다면 promo-item에 position: relative를 주고 이 버튼에 position: absolute, bottom: 0 등을 적용해야 합니다. */
+        }
+
+        .promo-item a:hover {
+            background-color: #677BC4; 
+        }
+        
+        /* 챗봇 자동 등록 목록 컨테이너 스타일 */
+        #promo-list {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
 <body>
     <h1 class="title">CP소통방 공식 홍보 게시판</h1>
-    <p class="subtitle">모던하고 세련된 홍보물들을 확인하고 자유롭게 공유하세요.</p>
+    <p class="subtitle">챗봇을 통해 등록된 실시간 홍보물과 고정 추천 홍보물을 확인하세요.</p>
 
     <div class="container">
-        <h2>금주의 추천 홍보물</h2>
+        <h2>실시간 홍보 목록</h2>
+        <div id="promo-list">
+            <p style="text-align:center; width: 100%;">데이터 로딩 중...</p> 
+        </div>
+
+        <h2>금주의 추천 홍보물 (고정)</h2>
         
         <div class="promo-item">
             <h3>🚗 차량 판매중! (분노의 질주 등)</h3>
@@ -117,5 +159,62 @@ body {
             </a>
         </div>
         
-        </div>
+    </div>
+
+    <script>
+        // 🚨 중요: 여기에 본인의 Firebase 설정 정보를 입력하세요! 🚨
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY", 
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "YOUR_PROJECT_ID",
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const promoListElement = document.getElementById('promo-list');
+
+        function loadPromos() {
+            // 'promos' 경로의 데이터를 가져와서 최신순으로 정렬
+            database.ref('promos').orderByChild('time').once('value', (snapshot) => {
+                promoListElement.innerHTML = ''; // 기존 목록 초기화
+                const promos = [];
+
+                snapshot.forEach((childSnapshot) => {
+                    promos.push(childSnapshot.val());
+                });
+
+                promos.reverse(); // 최신 데이터가 가장 위로 오도록 순서 변경
+
+                if (promos.length === 0) {
+                    promoListElement.innerHTML = '<p style="text-align:center; width: 100%;">아직 등록된 실시간 홍보물이 없습니다.</p>';
+                    return;
+                }
+
+                promos.forEach((promo) => {
+                    const contentWithBreaks = (promo.content || '').replace(/\n/g, '<br>');
+                    
+                    const linkButton = promo.link 
+                        ? `<a href="${promo.link}" target="_blank">자세히 보기 / 문의하기</a>` 
+                        : '';
+                        
+                    // 챗봇 자동 등록 항목도 수동 항목과 동일한 스타일을 적용합니다.
+                    const promoHtml = `
+                        <div class="promo-item">
+                            <h3>${promo.title || '제목 없음'}</h3>
+                            <p>${contentWithBreaks}</p>
+                            ${linkButton}
+                        </div>
+                    `;
+                    promoListElement.innerHTML += promoHtml;
+                });
+            }, (error) => {
+                promoListElement.innerHTML = `<p style="text-align:center; color:#F04747; width: 100%;">데이터 로딩 오류: ${error.message}</p>`;
+            });
+        }
+
+        // 페이지 로드 시 함수 실행
+        loadPromos();
+    </script>
 </body>
+</html>
