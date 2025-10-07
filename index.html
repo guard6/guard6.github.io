@@ -91,6 +91,7 @@
             padding: 15px 20px;
             border-radius: 8px;
             transition: background-color 0.2s;
+            min-height: 50px; 
         }
 
         .product-item:hover {
@@ -102,6 +103,7 @@
             flex-direction: column;
             align-items: flex-start;
             flex-grow: 1;
+            justify-content: center;
         }
 
         .product-name {
@@ -117,11 +119,21 @@
             font-size: 0.95em;
         }
         
-        /* 수량 조절 및 버튼 그룹 */
-        .product-actions {
+        /* 옵션 및 액션 그룹 */
+        .product-options-actions {
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .option-select {
+            padding: 8px;
+            border: 1px solid #4F545C;
+            border-radius: 5px;
+            background-color: #40444B;
+            color: var(--color-text);
+            /* 핵엔 옵션이 길어서 너비 조정 */
+            max-width: 180px; 
         }
 
         .quantity-input {
@@ -143,6 +155,7 @@
             cursor: pointer;
             font-weight: 700;
             transition: background-color 0.2s;
+            white-space: nowrap; 
         }
 
         .add-to-cart-btn:hover {
@@ -208,6 +221,7 @@
             font-size: 1.5em;
             font-weight: 700;
             color: #FFFFFF;
+            margin-bottom: 20px; 
         }
 
         .remove-btn {
@@ -224,13 +238,32 @@
             background-color: #CC3D3D;
         }
         
+        /* 내용 복사 버튼 */
+        #copy-button {
+            width: 100%;
+            background-color: #FAA61A; 
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #copy-button:hover {
+            background-color: #E69517;
+        }
+
         /* --- 7. 모바일 최적화 --- */
         @media (max-width: 768px) {
             .title { font-size: 2.5em; }
             .section-card { padding: 20px; }
             .product-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .product-actions { width: 100%; justify-content: space-between; }
+            .product-options-actions { width: 100%; justify-content: space-between; }
             .quantity-input { width: 40px; }
+            .option-select { flex-grow: 1; max-width: none; }
         }
     </style>
 </head>
@@ -246,32 +279,58 @@
             <h2>✨ 품목 목록 및 가격</h2>
             
             <script>
+                // 전체 품목 데이터 정의
                 const productData = [
-                    { name: "✅ 핵엔", price: 500 },
-                    { name: "✅ 반글", price: 500 },
-                    { name: "✅ 핵현엔", price: 500 },
-                    { name: "✅ 핵윙", price: 500 },
-                    { name: "✅ 핵바디킷", price: 500 },
-                    { name: "✅ 루프박스", price: 500 },
-                    { name: "✅ 루프탑", price: 500 },
-                    { name: "✅ 루프랙", price: 500 },
-                    { name: "✅ UFO", price: 500 },
-                    { name: "✅ 반유엪", price: 500 },
-                    { name: "✅ 범퍼제거", price: 500 },
-                    { name: "✅ 크롬휠", price: 500 },
-                    { name: "✅ 크롬라이트", price: 500 },
-                    { name: "✅ 크롬유리", price: 500 },
-                    { name: "✅ 크롬도색", price: 500 },
-                    { name: "✅ 크롬캘리퍼", price: 500 },
-                    { name: "✅ 사이렌", price: 500 },
-                    { name: "✅ 차량소환", price: 500 },
-                    { name: "✅ 풀머니", price: 500 },
-                    { name: "✅ 풀코인", price: 500 },
-                    { name: "✅ 아이디 4글자", price: 500 },
-                    { name: "✅ 아이디 6글자", price: 500 },
-                    { name: "✅ 클랜 일일 미션 클리어", price: 500 },
-                    { name: "✅ 패키지 언락", price: 4500 },
-                    { name: "✅ 킹랭작업", price: 5900 },
+                    // --- 옵션이 추가된 품목: 핵엔 ---
+                    { 
+                        name: "✅ 핵엔", 
+                        price: 500, 
+                        option: { 
+                            label: "엔진 옵션 선택", 
+                            values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] 
+                        } 
+                    },
+                    { name: "✅ 반글", price: 500, option: null },
+                    { name: "✅ 핵현엔", price: 500, option: null },
+                    { name: "✅ 핵윙", price: 500, option: null },
+                    { name: "✅ 핵바디킷", price: 500, option: null },
+                    { name: "✅ 루프박스", price: 500, option: null },
+                    { name: "✅ 루프탑", price: 500, option: null },
+                    { name: "✅ 루프랙", price: 500, option: null },
+                    { name: "✅ UFO", price: 500, option: null },
+                    { name: "✅ 반유엪", price: 500, option: null },
+                    { name: "✅ 범퍼제거", price: 500, option: null },
+                    { name: "✅ 크롬휠", price: 500, option: null },
+                    { name: "✅ 크롬유리", price: 500, option: null },
+                    { name: "✅ 크롬도색", price: 500, option: null },
+                    
+                    // --- 옵션이 추가된 품목: 색상 선택 ---
+                    { 
+                        name: "✅ 크롬캘리퍼", 
+                        price: 500, 
+                        option: { 
+                            label: "색상 선택", 
+                            values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] 
+                        } 
+                    },
+                    { 
+                        name: "✅ 크롬라이트", 
+                        price: 500, 
+                        option: { 
+                            label: "색상 선택", 
+                            values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] 
+                        } 
+                    },
+                    
+                    { name: "✅ 사이렌", price: 500, option: null },
+                    { name: "✅ 차량소환", price: 500, option: null },
+                    { name: "✅ 풀머니", price: 500, option: null },
+                    { name: "✅ 풀코인", price: 500, option: null },
+                    { name: "✅ 아이디 4글자", price: 500, option: null },
+                    { name: "✅ 아이디 6글자", price: 500, option: null },
+                    { name: "✅ 클랜 일일 미션 클리어", price: 500, option: null },
+                    { name: "✅ 패키지 언락", price: 4500, option: null },
+                    { name: "✅ 킹랭작업", price: 5900, option: null },
                 ];
             </script>
             
@@ -294,6 +353,8 @@
                 <span>총 계산 금액:</span>
                 <span id="total-price">0원</span>
             </div>
+
+            <button id="copy-button">📝 장바구니 내용 복사하기</button>
             
         </div>
         
@@ -310,23 +371,42 @@
         const cartList = document.getElementById('cart-list');
         const totalPriceDisplay = document.getElementById('total-price');
         const emptyCartMessage = document.getElementById('empty-cart-message');
+        const copyButton = document.getElementById('copy-button');
         
         let cart = []; // 장바구니 데이터를 저장할 배열
 
-        // 1. 품목 목록 동적 생성
+        // 옵션 드롭다운 HTML 생성 함수
+        function createOptionSelect(options) {
+            let selectHtml = `<select class="option-select">`;
+            selectHtml += `<option value="" disabled selected>${options.label}</option>`;
+            options.values.forEach(value => {
+                selectHtml += `<option value="${value}">${value}</option>`;
+            });
+            selectHtml += `</select>`;
+            return selectHtml;
+        }
+
+        // 1. 품목 목록 동적 생성 (옵션 포함)
         function renderProducts() {
-            productData.forEach(product => {
+            productListContainer.innerHTML = '';
+            productData.forEach((product) => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('product-item');
                 itemElement.setAttribute('data-name', product.name);
                 itemElement.setAttribute('data-price', product.price);
                 
+                let optionHtml = '';
+                if (product.option) {
+                    optionHtml = createOptionSelect(product.option);
+                }
+
                 itemElement.innerHTML = `
                     <div class="product-info">
                         <span class="product-name">${product.name}</span>
                         <span class="product-price">${product.price.toLocaleString()}원</span>
                     </div>
-                    <div class="product-actions">
+                    <div class="product-options-actions">
+                        ${optionHtml}
                         <input type="number" class="quantity-input" value="1" min="1">
                         <button class="add-to-cart-btn">장바구니 담기</button>
                     </div>
@@ -341,12 +421,27 @@
                     const name = itemElement.getAttribute('data-name');
                     const price = parseInt(itemElement.getAttribute('data-price'));
                     const quantityInput = itemElement.querySelector('.quantity-input');
+                    const selectElement = itemElement.querySelector('.option-select');
+                    
                     const quantity = parseInt(quantityInput.value);
+                    let optionValue = null;
+
+                    if (selectElement) {
+                        optionValue = selectElement.value;
+                        if (!optionValue) {
+                            // 옵션이 있는 상품인데 선택하지 않았을 경우 경고
+                            alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
+                            return;
+                        }
+                    }
 
                     if (quantity > 0) {
-                        addToCart(name, price, quantity);
-                        alert(`${name} ${quantity}개가 장바구니에 담겼습니다!`);
+                        addToCart(name, price, quantity, optionValue);
+                        alert(`${name}${optionValue ? ' (' + optionValue + ')' : ''} ${quantity}개가 장바구니에 담겼습니다!`);
                         quantityInput.value = 1; // 담고 나면 수량 초기화
+                        if (selectElement) {
+                             selectElement.selectedIndex = 0; // 옵션 초기화
+                        }
                     } else {
                         alert('수량을 1개 이상으로 설정해주세요.');
                     }
@@ -354,16 +449,20 @@
             });
         }
         
-        // 3. 장바구니에 상품을 추가하는 함수
-        function addToCart(name, price, quantity) {
-            const existingItemIndex = cart.findIndex(item => item.name === name);
+        // 3. 장바구니에 상품을 추가하는 함수 (optionValue 인자 포함)
+        function addToCart(name, price, quantity, optionValue) {
+            // 옵션이 있다면, 이름과 옵션을 합쳐 고유한 ID로 사용
+            const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
+
+            // 이미 장바구니에 있는 동일 옵션 상품 찾기
+            const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
 
             if (existingItemIndex > -1) {
                 // 이미 있는 상품이면 수량만 업데이트
                 cart[existingItemIndex].quantity += quantity;
             } else {
                 // 새로운 상품이면 추가
-                cart.push({ name, price, quantity });
+                cart.push({ uniqueName, name, price, quantity, optionValue });
             }
             
             renderCart();
@@ -383,18 +482,24 @@
             if (cart.length === 0) {
                 emptyCartMessage.style.display = 'block';
                 cartList.appendChild(emptyCartMessage);
+                copyButton.disabled = true; 
             } else {
                 emptyCartMessage.style.display = 'none';
+                copyButton.disabled = false; 
                 
                 cart.forEach((item, index) => {
-                    // 상품별 총액 계산
                     const itemTotal = item.price * item.quantity;
                     total += itemTotal;
                     
+                    // 장바구니에 표시될 이름 (옵션 포함)
+                    const displayName = item.optionValue 
+                        ? `${item.name} (${item.optionValue})` 
+                        : item.name;
+
                     const itemElement = document.createElement('div');
                     itemElement.classList.add('cart-item');
                     itemElement.innerHTML = `
-                        <span>${item.name} (${item.quantity}개)</span>
+                        <span>${displayName} (${item.quantity}개)</span>
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <span style="color: #43B581;">${itemTotal.toLocaleString()}원</span>
                             <button class="remove-btn" data-index="${index}">제거</button>
@@ -415,6 +520,42 @@
                 });
             });
         }
+        
+        // 6. 장바구니 내용을 텍스트로 만들어 복사하는 함수
+        function copyCartContent() {
+            if (cart.length === 0) {
+                alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
+                return;
+            }
+
+            let copyText = "--- CP 작업대행소 주문 내용 ---\n\n";
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                // 복사될 내용: [품목명 [옵션값]] - 수량개
+                const detail = item.optionValue ? `[${item.optionValue}]` : '';
+                copyText += `[ ${item.name} ${detail} ] - ${item.quantity}개\n`;
+            });
+
+            copyText += `\n---------------------------------\n`;
+            copyText += `✅ 총 주문 품목: ${cart.length}가지\n`;
+            copyText += `💰 총 결제 금액: ${total.toLocaleString()}원\n`;
+            copyText += `\n(위 내용을 오픈채팅방에 복사하여 문의해주세요.)`;
+
+            // 클립보드에 복사하는 API 사용
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert('장바구니 내용이 클립보드에 복사되었습니다. 카카오톡에 붙여넣기(Ctrl+V) 하세요!');
+            }).catch(err => {
+                console.error('클립보드 복사 실패: ', err);
+                alert('클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요:\n\n' + copyText);
+            });
+        }
+
+        // 7. 복사 버튼에 이벤트 리스너 연결
+        copyButton.addEventListener('click', copyCartContent);
 
         // 페이지 로드 시 초기 실행
         renderProducts();
