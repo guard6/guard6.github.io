@@ -8,15 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. 기본 설정 및 디자인 변수 (다크 모드) --- */
+        /* CSS 스타일은 이전과 동일합니다. (정렬 문제 해결된 버전) */
         :root {
-            --bg-dark: #2C2F33; /* 본문 배경 */
-            --bg-container: #36393F; /* 컨테이너 배경 */
-            --color-primary: #7289DA; /* 주요 강조색 (디스코드 블루) */
-            --color-success: #43B581; /* 장바구니 버튼 */
-            --color-danger: #F04747; /* 제거 버튼 */
-            --color-text: #DCDDDE; /* 일반 텍스트 색상 */
-            --color-light-text: #B9BBBE; /* 연한 텍스트 색상 */
+            --bg-dark: #2C2F33; 
+            --bg-container: #36393F; 
+            --color-primary: #7289DA; 
+            --color-success: #43B581; 
+            --color-danger: #F04747; 
+            --color-text: #DCDDDE; 
+            --color-light-text: #B9BBBE; 
         }
 
         body {
@@ -29,7 +29,6 @@
             min-height: 100vh;
         }
 
-        /* --- 2. 헤더 및 제목 스타일 --- */
         header {
             background-color: #23272A; 
             padding: 40px 20px;
@@ -50,7 +49,6 @@
             margin-top: 10px;
         }
 
-        /* --- 3. 메인 콘텐츠 컨테이너 --- */
         .main-content {
             max-width: 1000px;
             margin: 0 auto;
@@ -58,7 +56,6 @@
             text-align: left;
         }
 
-        /* --- 4. 섹션 스타일 (카드) --- */
         .section-card {
             background-color: var(--bg-container);
             padding: 30px;
@@ -76,7 +73,6 @@
             font-size: 1.8em;
         }
 
-        /* --- 5. 상품 목록 스타일 --- */
         .product-list {
             display: flex;
             flex-direction: column;
@@ -119,11 +115,11 @@
             font-size: 0.95em;
         }
         
-        /* 옵션 및 액션 그룹 */
         .product-options-actions {
             display: flex;
             align-items: center;
             gap: 10px;
+            max-width: 400px; 
         }
 
         .option-select {
@@ -132,8 +128,9 @@
             border-radius: 5px;
             background-color: #40444B;
             color: var(--color-text);
-            /* 핵엔 옵션이 길어서 너비 조정 */
+            flex-grow: 1; 
             max-width: 180px; 
+            min-width: 150px;
         }
 
         .quantity-input {
@@ -162,7 +159,6 @@
             background-color: #3AA876;
         }
         
-        /* 문의 버튼 스타일 */
         .inquiry-btn {
             display: block;
             background-color: var(--color-primary);
@@ -181,7 +177,6 @@
             background-color: #677BC4;
         }
 
-        /* --- 6. 장바구니 및 총계산 스타일 --- */
         .cart-section h2 {
             color: #FAA61A;
             border-bottom-color: #FAA61A;
@@ -238,7 +233,6 @@
             background-color: #CC3D3D;
         }
         
-        /* 내용 복사 버튼 */
         #copy-button {
             width: 100%;
             background-color: #FAA61A; 
@@ -256,12 +250,11 @@
             background-color: #E69517;
         }
 
-        /* --- 7. 모바일 최적화 --- */
         @media (max-width: 768px) {
             .title { font-size: 2.5em; }
             .section-card { padding: 20px; }
             .product-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .product-options-actions { width: 100%; justify-content: space-between; }
+            .product-options-actions { width: 100%; justify-content: space-between; max-width: none; }
             .quantity-input { width: 40px; }
             .option-select { flex-grow: 1; max-width: none; }
         }
@@ -279,9 +272,11 @@
             <h2>✨ 품목 목록 및 가격</h2>
             
             <script>
+                // 카카오톡 오픈채팅 링크 정의
+                const KAKAO_CHAT_LINK = "https://open.kakao.com/me/httppfkakaocom_SdfwG";
+                
                 // 전체 품목 데이터 정의
                 const productData = [
-                    // --- 옵션이 추가된 품목: 핵엔 ---
                     { 
                         name: "✅ 핵엔", 
                         price: 500, 
@@ -304,7 +299,6 @@
                     { name: "✅ 크롬유리", price: 500, option: null },
                     { name: "✅ 크롬도색", price: 500, option: null },
                     
-                    // --- 옵션이 추가된 품목: 색상 선택 ---
                     { 
                         name: "✅ 크롬캘리퍼", 
                         price: 500, 
@@ -354,7 +348,7 @@
                 <span id="total-price">0원</span>
             </div>
 
-            <button id="copy-button">📝 장바구니 내용 복사하기</button>
+            <button id="copy-button">📝 장바구니 내용 복사 및 문의하기</button>
             
         </div>
         
@@ -386,7 +380,7 @@
             return selectHtml;
         }
 
-        // 1. 품목 목록 동적 생성 (옵션 포함)
+        // 1. 품목 목록 동적 생성
         function renderProducts() {
             productListContainer.innerHTML = '';
             productData.forEach((product) => {
@@ -429,7 +423,6 @@
                     if (selectElement) {
                         optionValue = selectElement.value;
                         if (!optionValue) {
-                            // 옵션이 있는 상품인데 선택하지 않았을 경우 경고
                             alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
                             return;
                         }
@@ -438,9 +431,9 @@
                     if (quantity > 0) {
                         addToCart(name, price, quantity, optionValue);
                         alert(`${name}${optionValue ? ' (' + optionValue + ')' : ''} ${quantity}개가 장바구니에 담겼습니다!`);
-                        quantityInput.value = 1; // 담고 나면 수량 초기화
+                        quantityInput.value = 1; 
                         if (selectElement) {
-                             selectElement.selectedIndex = 0; // 옵션 초기화
+                             selectElement.selectedIndex = 0; 
                         }
                     } else {
                         alert('수량을 1개 이상으로 설정해주세요.');
@@ -449,19 +442,14 @@
             });
         }
         
-        // 3. 장바구니에 상품을 추가하는 함수 (optionValue 인자 포함)
+        // 3. 장바구니에 상품을 추가하는 함수
         function addToCart(name, price, quantity, optionValue) {
-            // 옵션이 있다면, 이름과 옵션을 합쳐 고유한 ID로 사용
             const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
-
-            // 이미 장바구니에 있는 동일 옵션 상품 찾기
             const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
 
             if (existingItemIndex > -1) {
-                // 이미 있는 상품이면 수량만 업데이트
                 cart[existingItemIndex].quantity += quantity;
             } else {
-                // 새로운 상품이면 추가
                 cart.push({ uniqueName, name, price, quantity, optionValue });
             }
             
@@ -474,24 +462,25 @@
             renderCart();
         }
 
-        // 5. 장바구니 목록과 총액을 다시 그리는 함수 (핵심 계산 로직)
+        // 5. 장바구니 목록과 총액을 다시 그리는 함수
         function renderCart() {
-            cartList.innerHTML = ''; // 기존 목록 초기화
+            cartList.innerHTML = ''; 
             let total = 0;
             
             if (cart.length === 0) {
                 emptyCartMessage.style.display = 'block';
                 cartList.appendChild(emptyCartMessage);
                 copyButton.disabled = true; 
+                copyButton.textContent = '장바구니가 비어 있습니다.';
             } else {
                 emptyCartMessage.style.display = 'none';
                 copyButton.disabled = false; 
+                copyButton.textContent = '📝 장바구니 내용 복사 및 문의하기';
                 
                 cart.forEach((item, index) => {
                     const itemTotal = item.price * item.quantity;
                     total += itemTotal;
                     
-                    // 장바구니에 표시될 이름 (옵션 포함)
                     const displayName = item.optionValue 
                         ? `${item.name} (${item.optionValue})` 
                         : item.name;
@@ -509,10 +498,8 @@
                 });
             }
 
-            // 최종 총액 업데이트
             totalPriceDisplay.textContent = total.toLocaleString() + '원';
             
-            // '제거' 버튼 이벤트 리스너 다시 설정 (목록이 갱신될 때마다)
             document.querySelectorAll('.remove-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const index = parseInt(e.target.getAttribute('data-index'));
@@ -521,7 +508,7 @@
             });
         }
         
-        // 6. 장바구니 내용을 텍스트로 만들어 복사하는 함수
+        // 6. 장바구니 내용을 텍스트로 만들어 복사하고 카톡으로 이동하는 함수 (수정된 부분)
         function copyCartContent() {
             if (cart.length === 0) {
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
@@ -535,7 +522,6 @@
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
                 
-                // 복사될 내용: [품목명 [옵션값]] - 수량개
                 const detail = item.optionValue ? `[${item.optionValue}]` : '';
                 copyText += `[ ${item.name} ${detail} ] - ${item.quantity}개\n`;
             });
@@ -543,14 +529,21 @@
             copyText += `\n---------------------------------\n`;
             copyText += `✅ 총 주문 품목: ${cart.length}가지\n`;
             copyText += `💰 총 결제 금액: ${total.toLocaleString()}원\n`;
-            copyText += `\n(위 내용을 오픈채팅방에 복사하여 문의해주세요.)`;
+            copyText += `\n(위 내용을 오픈채팅방에 붙여넣기 후 문의해주세요.)`;
 
-            // 클립보드에 복사하는 API 사용
+            // 1. 클립보드에 복사 시도
             navigator.clipboard.writeText(copyText).then(() => {
-                alert('장바구니 내용이 클립보드에 복사되었습니다. 카카오톡에 붙여넣기(Ctrl+V) 하세요!');
+                alert('✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
+                
+                // 2. 복사 성공 시 카카오톡 오픈채팅 링크로 이동
+                window.location.href = KAKAO_CHAT_LINK;
+
             }).catch(err => {
                 console.error('클립보드 복사 실패: ', err);
-                alert('클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요:\n\n' + copyText);
+                alert('⚠️ 클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요.\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
+                
+                // 3. 복사 실패 시에도 카카오톡 오픈채팅 링크로 이동 (수동 복사를 위해)
+                window.location.href = KAKAO_CHAT_LINK;
             });
         }
 
