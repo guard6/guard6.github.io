@@ -1,23 +1,126 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>GUARD</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            padding: 50px;
-            background: purple;
-            color: white;
-        }
-        h1 {
-            font-size: 50px;
-        }
-    </style>
-</head>
+배경과 디자인을 고급스럽고 세련된 느낌이 나도록 전체적으로 수정해 드리겠습니다!
+
+현재 보라색 배경 대신, 어둡고 모던한 배경에 밝은 폰트와 골드 포인트를 사용하여 전문적인 홍보 게시판처럼 보이도록 코드를 수정해 보세요.
+
+🎨 고급스러운 디자인으로 index.html 수정하기
+guard6.github.io 리포지토리의 index.html 파일을 편집 모드로 열고, <style> 태그와 <body> 태그 안의 내용을 아래와 같이 바꿔주세요.
+
+1. 스타일 (CSS) 수정: 어둡고 세련된 테마 적용
+기존 <style> 태그 안의 모든 내용을 아래 코드로 교체합니다. 다크 모드에 가까운 모던한 색상 조합입니다.
+
+HTML
+
+<style>
+/* --- 전체 스타일 (고급 다크 테마) --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 현대적인 폰트 */
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #121212; /* 짙은 회색 배경 (다크) */
+    color: #E0E0E0; /* 밝은 회색 폰트 */
+    margin: 0;
+}
+
+/* --- 제목 스타일 --- */
+.title {
+    font-size: 2.5em;
+    color: #FFD700; /* 골드 색상으로 제목 강조 */
+    margin-bottom: 5px;
+    font-weight: 300;
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: #A0A0A0;
+    margin-bottom: 40px;
+}
+
+/* --- 컨테이너 (홍보물 영역) 스타일 --- */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+    padding: 30px;
+    background-color: #1F1F1F; /* 배경보다 살짝 밝은 패널 색상 */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* 은은한 그림자로 입체감 */
+}
+
+.container h2 {
+    color: #FFD700; /* 섹션 제목도 골드 포인트 */
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+/* --- 개별 홍보물 스타일 --- */
+.promo-item {
+    background-color: #2C2C2C; /* 개별 홍보물 배경 */
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.promo-item:hover {
+    transform: translateY(-5px); /* 마우스 오버 시 살짝 떠오르는 효과 */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+}
+
+.promo-item h3 {
+    margin-top: 0;
+    color: #FFFFFF;
+    font-size: 1.4em;
+    border-left: 3px solid #FFD700; /* 골드 라인으로 강조 */
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+.promo-item p {
+    color: #B0B0B0;
+    line-height: 1.6;
+}
+
+/* --- 경고/링크 스타일 --- */
+.warning {
+    color: #f75d5d; /* 경고는 세련된 붉은색 */
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.promo-item a {
+    display: inline-block;
+    color: #FFD700; /* 링크를 골드로 강조 */
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 15px;
+    border: 1px solid #FFD700;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.promo-item a:hover {
+    background-color: #333333; /* 마우스 오버 시 어둡게 변화 */
+}
+</style>
 <body>
-    <h1>🛡️ GUARD</h1>
-    <p>환영합니다!</p>
+    <h1 class="title">CP소통방 공식 홍보 게시판</h1>
+    <p class="subtitle">모던하고 세련된 홍보물들을 확인하고 자유롭게 공유하세요.</p>
+
+    <div class="container">
+        <h2>금주의 추천 홍보물</h2>
+        
+        <div class="promo-item">
+            <h3>🚗 차량 판매중! (분노의 질주 차량 등)</h3>
+            <p>🥳분노의 질주 차량 출시하였습니다‼️</p>
+            <p>⭐️아반떼N 등 국산차량들, 다양한 VIP 세단 차량들 보유! 약 80대의 데칼 차량과 5,000₩-20,000₩ 사이의 다양한 차량들이 있습니다.</p>
+            <p class="warning">❌카팍머니, 차교 안 받습니다❌</p>
+
+            <a href="https://open.kakao.com/me/ONCOMPANY" target="_blank">
+                𝑶𝑱컴퍼니 전시샵 바로가기
+            </a>
+        </div>
+        
+        </div>
 </body>
-</html>
