@@ -29,29 +29,27 @@
             min-height: 100vh;
         }
 
-        /* --- 1-1. 워터마크 스타일 추가 --- */
+        /* --- 1-1. 워터마크 스타일 --- */
         body::before {
             content: "@Maker"; /* 워터마크 텍스트 */
-            position: fixed; /* 뷰포트에 고정 */
-            top: 50%; /* 수직 중앙 */
-            left: 50%; /* 수평 중앙 */
-            transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
-            
-            /* 스타일 설정 */
-            font-size: 15em; /* 매우 크게 설정 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 15em;
             font-weight: 700;
-            color: #4F545C; /* 배경에 묻히는 어두운 회색 */
-            opacity: 0.05; /* 불투명도 설정 (거슬리지 않게 5%로 낮춤) */
-            pointer-events: none; /* 클릭 이벤트 무시 */
-            z-index: -1; /* 다른 콘텐츠 뒤로 보내기 */
-            white-space: nowrap; /* 줄바꿈 방지 */
+            color: #4F545C;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: -1;
+            white-space: nowrap;
         }
         
         /* --- 2. 헤더 및 제목 스타일 --- */
         header {
             background-color: #23272A;
             padding: 40px 20px 0 20px; 
-            margin-bottom: 30px;
+            margin-bottom: 0; /* 목록 때문에 마진 제거 */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
@@ -80,14 +78,49 @@
             margin-bottom: 20px; 
         }
 
-        /* --- 2-1. 전광판 스타일 수정 (Marquee) --- */
+        /* --- 2-2. 상단 내비게이션 링크 목록 스타일 (새로 추가됨) --- */
+        .nav-links {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 20px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 30px; /* 다음 요소와 간격 */
+        }
+
+        .nav-item {
+            flex: 1;
+            background-color: #1E2124;
+            color: var(--color-light-text);
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.2s, color 0.2s;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid #4F545C;
+        }
+
+        .nav-item:hover {
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+            border-color: var(--color-primary);
+        }
+
+        /* --- 2-3. 전광판 스타일 수정 (Marquee) --- */
         .marquee-container {
             width: 100%;
-            background-color: #1E2124; /* 헤더보다 살짝 어두운 배경 */
-            padding: 10px 0; /* 패딩 증가 */
+            background-color: #1E2124;
+            padding: 10px 0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             overflow: hidden; 
-            white-space: nowrap; /* 줄바꿈 방지 */
+            white-space: nowrap;
+            margin-bottom: 30px;
         }
 
         /* 텍스트가 흘러가는 애니메이션 정의 */
@@ -97,22 +130,17 @@
         }
 
         .marquee-text {
-            /* flex를 사용하여 텍스트가 한 줄로 이어지게 함 (inline-block 방식 제거) */
             display: flex; 
             white-space: nowrap;
-            
-            /* 애니메이션 적용: 속도 10s 유지 (빠른 속도) */
             animation: marquee-animation 10s linear infinite; 
-            
-            font-size: 1.5em; /* 글씨 크기 확대 */
+            font-size: 1.5em;
             font-weight: 700;
             color: #7289DA; 
         }
 
         .marquee-text span {
-            /* 텍스트 내용: 간격 확대 */
-            padding-right: 100px; /* 반복되는 텍스트 간격 확대 */
-            flex-shrink: 0; /* 텍스트가 줄어들지 않도록 설정 */
+            padding-right: 100px;
+            flex-shrink: 0;
         }
         
         /* --- 3. 메인 콘텐츠 컨테이너 --- */
@@ -358,6 +386,12 @@
             .section-card { padding: 20px; }
             .product-actions { margin-left: 0; }
         }
+        @media (max-width: 600px) {
+            .nav-links {
+                flex-direction: column; /* 모바일에서는 세로로 쌓기 */
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -366,6 +400,19 @@
         <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!</p>
     </header>
 
+    <div class="nav-links">
+        <a href="https://guard6.github.io/unicode-tool-index.html/" target="_blank" class="nav-item">
+            🔤 특수문자 & 폰트 변환기
+        </a>
+        
+        <a href="#" class="nav-item" style="background-color: var(--color-primary); color: white;">
+            💰 프리미엄 견적 (현재 페이지)
+        </a>
+        
+        <a href="https://open.kakao.com/me/Makergg" target="_blank" class="nav-item">
+            📢 공지사항 및 문의
+        </a>
+    </div>
     <div class="marquee-container">
         <p class="marquee-text">
             <span>CP & GUARD 기술력 기반 프로젝트 | 운영·관리: <strong style="color: #FAA61A;">@Maker</strong> 🌟</span>
@@ -706,6 +753,7 @@
             }
         });
 
+        // 페이지 로드 시 초기화
         getVisitorIP();
         renderProducts();
         renderCart();
