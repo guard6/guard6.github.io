@@ -168,27 +168,6 @@
             margin-bottom: 20px;
             font-size: 1.8em;
         }
-        
-        /* ⭐️ 차량 이름 입력 필드 스타일 */
-        .car-name-input-container {
-            margin-bottom: 20px;
-        }
-
-        #car-name-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #4F545C;
-            border-radius: 8px;
-            background-color: #40444B;
-            color: var(--color-text);
-            font-size: 1.1em;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        #car-name-input::placeholder {
-            color: var(--color-light-text);
-        }
-        /* ⭐️ END 차량 이름 입력 필드 스타일 */
 
         /* --- 5. 상품 목록 스타일 --- */
         .product-list {
@@ -418,7 +397,7 @@
 <body>
     <header>
         <h1 class="title">Maker 🛠️</h1>
-        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!M10</p>
+        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!</p>
     </header>
 
     <div class="nav-links">
@@ -444,11 +423,7 @@
         
         <div class="section-card">
             <h2>✨ 품목 목록 및 가격</h2>
-            
-            <div class="car-name-input-container">
-                <input type="text" id="car-name-input" placeholder="차량 이름을 기입 해주세요 (예: BMW X7, Benz S600)">
-            </div>
-                        
+            
             <script>
                 const KAKAO_CHAT_LINK = "https://open.kakao.com/me/Makergg";
                 
@@ -552,8 +527,6 @@
         const emptyCartMessage = document.getElementById('empty-cart-message');
         const copyButton = document.getElementById('copy-button');
         const floatingCartSummary = document.getElementById('floating-cart-summary'); 
-        // ⭐️ 추가된 요소
-        const carNameInput = document.getElementById('car-name-input');
         
         let cart = [];
         let currentVisitorIP = null;
@@ -730,16 +703,6 @@
                 alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
                 return;
             }
-            
-            // ⭐️ 차량 이름 가져오기
-            const carName = carNameInput.value.trim();
-            let carNameNote = '';
-            
-            if (carName) {
-                carNameNote = `🚗 차량 이름: ${carName}\n`;
-            } else {
-                carNameNote = '🚨🚨🚨 차량 이름 미기입 🚨🚨🚨\n(이 메시지를 지우고 차량 이름을 꼭 적어주세요!)\n';
-            }
 
             // ⭐️ 판매코드 암호화
             const ipAddress = currentVisitorIP || '판매코드 정보 없음';
@@ -747,7 +710,6 @@
 
             let copyText = "--- Maker 주문 내용 ---\n\n";
             copyText += `👤 판매코드:: ${encryptedIP}\n\n`; // 🔐 판매코드 삽입
-            copyText += carNameNote + '\n'; // ⭐️ 차량 이름/경고 삽입
 
             let total = 0;
             
@@ -765,13 +727,7 @@
             copyText += `\n(위 내용을 오픈채팅방에 붙여넣기 후 문의해주세요.)`;
 
             navigator.clipboard.writeText(copyText).then(() => {
-                let alertMessage = '✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.';
-                
-                if (!carName) {
-                    alertMessage = '⚠️ 차량 이름이 기입되지 않았습니다. 복사된 내용을 수정하여 차량 이름을 꼭 적어주세요! ⚠️\n\n' + alertMessage;
-                }
-                
-                alert(alertMessage);
+                alert('✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
                 window.location.href = KAKAO_CHAT_LINK;
             }).catch(err => {
                 console.error('클립보드 복사 실패: ', err);
@@ -805,3 +761,5 @@
     </script>
 </body>
 </html>
+
+
