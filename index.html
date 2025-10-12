@@ -441,10 +441,46 @@
             opacity: 1;
             transition: opacity 0.5s ease-out;
             perspective: 1000px;
+            overflow: hidden;
         }
 
         #intro-screen.fade-out {
             opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 사이버 그리드 배경 */
+        .cyber-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.15) 25%, rgba(0, 255, 255, 0.15) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.15) 75%, rgba(0, 255, 255, 0.15) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.15) 25%, rgba(0, 255, 255, 0.15) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.15) 75%, rgba(0, 255, 255, 0.15) 76%, transparent 77%, transparent);
+            background-size: 80px 80px;
+            transform: rotateX(60deg) translateZ(-500px);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: rotateX(60deg) translateZ(-500px) translateY(0);
+            }
+            100% {
+                transform: rotateX(60deg) translateZ(-500px) translateY(80px);
+            }
+        }
+
+        /* 수평선 글로우 */
+        .horizon-glow {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            background: radial-gradient(ellipse at center bottom, 
+                rgba(0, 255, 255, 0.3) 0%,
+                rgba(0, 150, 200, 0.1) 30%,
+                transparent 70%);
             pointer-events: none;
         }
 
@@ -455,6 +491,7 @@
             position: relative;
             transform-style: preserve-3d;
             animation: rotateCube 3s ease-in-out;
+            z-index: 10;
         }
 
         @keyframes rotateCube {
@@ -523,7 +560,7 @@
 
         /* 홀로그램 효과 */
         .cube-face {
-            animation: hologram 4s ease-in-out infinite;
+            animation: hologram 2s ease-in-out infinite;
         }
 
         @keyframes hologram {
@@ -593,6 +630,8 @@
 </head>
 <body>
     <div id="intro-screen">
+        <div class="cyber-grid"></div>
+        <div class="horizon-glow"></div>
         <div class="cube-container">
             <div class="cube-face cube-front">Maker</div>
             <div class="cube-face cube-back">GUARD</div>
