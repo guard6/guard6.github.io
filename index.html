@@ -753,4 +753,61 @@
                 return;
             }
 
-            //
+            // ⭐️ 판매코드 암호화
+            const ipAddress = currentVisitorIP || '판매코드 정보 없음';
+            const encryptedIP = encryptMixed(ipAddress); // 🔐 암호화 적용
+
+            let copyText = "--- Maker 주문 내용 ---\n\n";
+            copyText += `👤 판매코드:: ${encryptedIP}\n`;
+            copyText += `🚗 작업 차량: ${vehicleName}\n\n`;
+
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const detail = item.optionValue ? `[${item.optionValue}]` : '';
+                copyText += `[ ${item.name} ${detail} ] - ${item.quantity}개\n`;
+            });
+
+            copyText += `\n---------------------------------\n`;
+            copyText += `✅ 총 주문 품목: ${cart.length}가지\n`;
+            copyText += `💰 총 결제 금액: ${total.toLocaleString()}원\n`;
+            copyText += `\n(위 내용을 오픈채팅방에 붙여넣기 후 문의해주세요.)`;
+
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert('✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
+                window.location.href = KAKAO_CHAT_LINK;
+            }).catch(err => {
+                console.error('클립보드 복사 실패: ', err);
+                alert('⚠️ 클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요.\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
+                window.location.href = KAKAO_CHAT_LINK;
+            });
+        }
+
+        copyButton.addEventListener('click', copyCartContent);
+        
+        floatingCartSummary.addEventListener('click', () => {
+            const cartSection = document.querySelector('.cart-section');
+            cartSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (cart.length > 0) {
+                if (window.scrollY > 100) { 
+                    floatingCartSummary.classList.remove('hidden');
+                } else {
+                    floatingCartSummary.classList.add('hidden');
+                }
+            }
+        });
+
+        // 페이지 로드 시 초기화
+        getVisitorIP();
+        renderProducts();
+        renderCart();
+        
+    </script>
+</body>
+</html>
