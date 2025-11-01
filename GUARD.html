@@ -1010,7 +1010,7 @@
         // ============================================
         
         // 강력한 6자리 액세스 코드 (특수문자 + 아랍어 + 숫자 혼합)
-        const VIP_ACCESS_CODE = "Ğ7₪Ω€9"; // 변경 가능한 VIP 코드
+        const VIP_ACCESS_CODE = "Ğ7₪Ω€9"; // ⚠️ 변경 시 기존 쿠키 무효화됨
         const COOKIE_NAME = "guard_vip_access";
         const COOKIE_DAYS = 7;
         const MAX_ATTEMPTS = 5;
@@ -1041,26 +1041,15 @@
         function checkVIPAccess() {
             const savedCode = getCookie(COOKIE_NAME);
             
+            // 쿠키의 코드와 현재 설정된 코드가 일치하는지 확인
             if (savedCode === VIP_ACCESS_CODE) {
                 // 쿠키에 올바른 코드 있음 - 바로 진입
                 document.getElementById('access-screen').classList.add('hidden');
-                
-                // 웰컴 화면 시작
-                const introScreen = document.getElementById('intro-screen');
-                introScreen.style.display = 'flex';
-                
-                setTimeout(() => {
-                    introScreen.classList.add('fade-out');
-                    
-                    setTimeout(() => {
-                        introScreen.style.display = 'none';
-                    }, 800);
-                }, 5000);
-                
                 return true;
             }
             
-            // 쿠키 없음 - 인증 필요
+            // 쿠키가 없거나 코드가 다름 - 인증 필요
+            // (비밀번호 변경 시 기존 쿠키는 무효화됨)
             return false;
         }
         
@@ -1078,6 +1067,7 @@
                 
                 setTimeout(() => {
                     document.getElementById('access-screen').classList.add('hidden');
+                    showWelcomeScreen(); // 웰컴 화면 표시
                 }, 800);
                 
             } else {
@@ -1120,8 +1110,27 @@
         
         // 페이지 로드 시 액세스 확인
         window.addEventListener('DOMContentLoaded', () => {
-            checkVIPAccess();
+            const hasAccess = checkVIPAccess();
+            
+            // 쿠키가 있어서 바로 입장한 경우에도 웰컴 화면 표시
+            if (hasAccess) {
+                showWelcomeScreen();
+            }
         });
+        
+        // 웰컴 화면 표시 함수
+        function showWelcomeScreen() {
+            const introScreen = document.getElementById('intro-screen');
+            introScreen.style.display = 'flex';
+            
+            setTimeout(() => {
+                introScreen.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                }, 800);
+            }, 5000);
+        }
         
         // ============================================
         // 🔐 커스텀 Base64 암호화 함수 (브라우저용)
