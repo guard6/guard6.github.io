@@ -1010,7 +1010,7 @@
         // ============================================
         
         // 강력한 6자리 액세스 코드 (특수문자 + 아랍어 + 숫자 혼합)
-        const VIP_ACCESS_CODE = "Ğ7₪Ω€90"; // ⚠️ 변경 시 기존 쿠키 무효화됨
+        const VIP_ACCESS_CODE = "Ğ7₪Ω€9"; // ⚠️ 변경 시 기존 쿠키 무효화됨
         const COOKIE_NAME = "guard_vip_access";
         const COOKIE_DAYS = 7;
         const MAX_ATTEMPTS = 5;
@@ -1406,38 +1406,7 @@
         renderCart();
 
         // 프리미엄 웰컴 애니메이션 제어
-        window.addEventListener('DOMContentLoaded', () => {
-            // 액세스 확인이 완료된 후에만 웰컴 화면 시작
-            const accessScreen = document.getElementById('access-screen');
-            const introScreen = document.getElementById('intro-screen');
-            
-            // MutationObserver로 액세스 화면이 숨겨지는 것을 감지
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.attributeName === 'class') {
-                        if (accessScreen.classList.contains('hidden')) {
-                            // 액세스 화면이 숨겨지면 웰컴 화면 시작
-                            introScreen.style.display = 'flex';
-                            
-                            setTimeout(() => {
-                                introScreen.classList.add('fade-out');
-                                
-                                setTimeout(() => {
-                                    introScreen.style.display = 'none';
-                                }, 800);
-                            }, 5000); // VIP 완전히 등장 후 1.5초 대기
-                            
-                            observer.disconnect();
-                        }
-                    }
-                });
-            });
-            
-            observer.observe(accessScreen, { attributes: true });
-            
-            // 처음엔 웰컴 화면 숨기기
-            introScreen.style.display = 'none';
-        });
+        // (쿠키 시스템 제거 - 매번 비밀번호 입력 필요)
         
     </script>
 </body>
