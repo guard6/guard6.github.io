@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUARD | 프리미엄 견적</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. 기본 설정 및 디자인 변수 (다크 모드) --- */
+        :root {
+            --bg-dark: #2C2F33;
+            --bg-container: #36393F;
+            --color-primary: #7289DA;
+            --color-success: #43B581;
+            --color-danger: #F04747;
+            --color-text: #DCDDDE;
+            --color-light-text: #B9BBBE;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            text-align: center;
+            background-color: var(--bg-dark);
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* --- 1-1. 워터마크 스타일 --- */
+        body::before {
+            content: "@GUARD"; /* 워터마크 텍스트 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 15em;
+            font-weight: 700;
+            color: #4F545C;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: -1;
+            white-space: nowrap;
+        }
+        
+        /* --- 2. 헤더 및 제목 스타일 --- */
+        header {
+            background-color: #23272A;
+            padding: 40px 20px 0 20px; 
+            margin-bottom: 0; /* 목록 때문에 마진 제거 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 🌈 실시간 색상 변경 애니메이션 정의 */
+        @keyframes color-cycle {
+            0% { color: #FF0000; } 
+            16% { color: #FFA500; } 
+            32% { color: #FFFF00; } 
+            48% { color: #00FF00; } 
+            64% { color: #00BFFF; } 
+            80% { color: #8A2BE2; } 
+            100% { color: #FF0000; } 
+        }
+
+        .title {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 0;
+            animation: color-cycle 6s linear infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--color-light-text);
+            margin-top: 10px;
+            margin-bottom: 20px; 
+        }
+
+        /* --- 2-2. 상단 내비게이션 링크 목록 스타일 (새로 추가됨) --- */
+        .nav-links {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 20px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 30px; /* 다음 요소와 간격 */
+        }
+
+        .nav-item {
+            flex: 1;
+            background-color: #1E2124;
+            color: var(--color-light-text);
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: background-color 0.2s, color 0.2s;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid #4F545C;
+        }
+
+        .nav-item:hover {
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+            border-color: var(--color-primary);
+        }
+
+        /* --- 2-3. 전광판 스타일 수정 (Marquee) --- */
+        .marquee-container {
+            width: 100%;
+            background-color: #1E2124;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            overflow: hidden; 
+            white-space: nowrap;
+            margin-bottom: 30px;
+        }
+
+        /* 텍스트가 흘러가는 애니메이션 정의 */
+        @keyframes marquee-animation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); } 
+        }
+
+        .marquee-text {
+            display: flex; 
+            white-space: nowrap;
+            animation: marquee-animation 10s linear infinite; 
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #7289DA; 
+        }
+
+        .marquee-text span {
+            padding-right: 100px;
+            flex-shrink: 0;
+        }
+        
+        /* --- 3. 메인 콘텐츠 컨테이너 --- */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 100px 20px; 
+            text-align: left;
+        }
+
+        /* --- 4. 섹션 스타일 (카드) --- */
+        .section-card {
+            background-color: var(--bg-container);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .section-card h2 {
+            color: var(--color-primary);
+            border-bottom: 2px solid #4F545C;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        /* --- 5. 상품 목록 스타일 --- */
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #2F3136;
+            padding: 15px 20px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .product-item:hover {
+            background-color: #3B3E42;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex-grow: 1;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 3px;
+        }
+
+        .product-price {
+            color: var(--color-success);
+            font-weight: 400;
+            font-size: 0.95em;
+        }
+        
+        .option-select {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #4F545C;
+            border-radius: 5px;
+            background-color: #40444B;
+            color: var(--color-text);
+        }
+        
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .quantity-input {
+            width: 50px;
+            padding: 8px;
+            border: 1px solid #4F545C;
+            border-radius: 5px;
+            background-color: #40444B;
+            color: var(--color-text);
+            text-align: center;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--color-success);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #3AA876;
+        }
+        
+        .inquiry-btn {
+            display: block;
+            background-color: var(--color-primary);
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .inquiry-btn:hover {
+            background-color: #677BC4;
+        }
+
+        /* --- 5-1. 차량 이름 입력 스타일 --- */
+        .vehicle-input-section {
+            background-color: #2F3136;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid var(--color-primary);
+        }
+
+        .vehicle-input-section label {
+            display: block;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+
+        .vehicle-input-section input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #4F545C;
+            border-radius: 5px;
+            background-color: #40444B;
+            color: var(--color-text);
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .vehicle-input-section input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        /* --- 6. 장바구니 및 총계산 스타일 --- */
+        .cart-section h2 {
+            color: #FAA61A;
+            border-bottom-color: #FAA61A;
+        }
+
+        .cart-list {
+            border: 1px solid #4F545C;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #2F3136;
+        }
+        
+        #empty-cart-message {
+            margin: 10px;
+            padding: 10px;
+            font-style: italic;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #4F545C;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--color-primary);
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+        }
+
+        .remove-btn {
+            background-color: var(--color-danger);
+            color: #FFFFFF;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.2s;
+        }
+        .remove-btn:hover {
+            background-color: #CC3D3D;
+        }
+        
+        #copy-button {
+            width: 100%;
+            background-color: #FAA61A;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #copy-button:hover {
+            background-color: #E69517;
+        }
+        
+        #floating-cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #FAA61A;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(50px);
+        }
+
+        #floating-cart-summary:hover {
+            background-color: #E69517;
+        }
+
+        #floating-cart-summary:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* --- 8. 모바일 최적화 --- */
+        @media (max-width: 768px) {
+            .title { font-size: 2.5em; }
+            .section-card { padding: 20px; }
+            .product-actions { margin-left: 0; }
+        }
+        @media (max-width: 600px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* --- 9-1. VIP 액세스 인증 화면 --- */
+        #access-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 1;
+        }
+
+        #access-screen.hidden {
+            display: none;
+        }
+
+        .access-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .access-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: lock-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes lock-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .access-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 10px;
+            letter-spacing: 0.1em;
+        }
+
+        .access-subtitle {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .access-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: #FFFFFF;
+            letter-spacing: 0.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .access-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .access-input::placeholder {
+            letter-spacing: 0.2em;
+            font-weight: 400;
+        }
+
+        .access-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+        }
+
+        .access-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .access-button:active {
+            transform: translateY(0);
+        }
+
+        .access-error {
+            color: #FF6B6B;
+            font-size: 0.9em;
+            margin-top: 15px;
+            min-height: 20px;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .access-attempts {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 480px) {
+            .access-container {
+                padding: 40px 30px;
+            }
+            .access-title {
+                font-size: 1.6em;
+            }
+            .access-input {
+                font-size: 1em;
+            }
+        }
+
+        /* --- 9. 프리미엄 모던 웰컴 스크린 --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.8s ease-out;
+            overflow: hidden;
+        }
+
+        #intro-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 배경 그리드 효과 */
+        #intro-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0;
+            animation: grid-fade-in 0.8s ease-out 2.1s forwards;
+        }
+
+        @keyframes grid-fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* 빛나는 원형 배경 */
+        .glow-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            animation: glow-pulse 2s ease-in-out 2.1s infinite;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { 
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.6;
+                transform: scale(1.1);
+            }
+        }
+
+        /* 심플한 로고 컨테이너 */
+        .simple-logo-container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 메인 로고 - GUARD */
+        .main-brand {
+            font-size: 8em;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 0.15em;
+            margin: 0;
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+            animation: zoom-in 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                       slide-left 0.6s cubic-bezier(0.76, 0, 0.24, 1) 1.5s forwards;
+        }
+
+        @keyframes zoom-in {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slide-left {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-150%);
+            }
+        }
+
+        /* VIP 텍스트 */
+        .vip-text {
+            font-size: 9em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700 0%, #FFC700 25%, #FFE55C 50%, #FFC700 75%, #FFD700 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.2em;
+            margin: 0;
+            line-height: 1;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) translateX(150%);
+            opacity: 0;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+            animation: slide-in-vip 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 2.1s forwards,
+                       premium-shimmer 3s ease-in-out 2.8s infinite,
+                       vip-glow 2s ease-in-out 2.8s infinite;
+        }
+
+        @keyframes slide-in-vip {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateX(150%) scale(0.8);
+            }
+            60% {
+                transform: translateX(-50%) translateX(0) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateX(0) scale(1);
+            }
+        }
+
+        @keyframes premium-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes vip-glow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+            }
+            50% { 
+                filter: drop-shadow(0 0 50px rgba(255, 215, 0, 1));
+            }
+        }
+
+        /* 심플한 라인 */
+        .simple-line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #7289DA, transparent);
+            margin: 30px auto 0 auto;
+            animation: expand-line 0.6s ease-out 0.4s both,
+                       fade-line-out 0.3s ease-out 1.5s forwards;
+        }
+
+        @keyframes expand-line {
+            0% { width: 0; opacity: 0; }
+            100% { width: 80px; opacity: 1; }
+        }
+
+        @keyframes fade-line-out {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* VIP 라인 */
+        .vip-line {
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, #FFA500, #FFD700, transparent);
+            margin: 35px auto 0 auto;
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: vip-line-appear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.8s forwards;
+        }
+
+        @keyframes vip-line-appear {
+            0% {
+                opacity: 0;
+                width: 0;
+            }
+            100% {
+                opacity: 1;
+                width: 120px;
+            }
+        }
+
+        /* VIP 하위 텍스트 */
+        .vip-subtitle {
+            position: absolute;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            color: rgba(255, 215, 0, 0.8);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: subtitle-fade-in 0.6s ease-out 3.2s forwards;
+        }
+
+        @keyframes subtitle-fade-in {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* 파티클 효과 */
+        .particle-dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            box-shadow: 0 0 6px #FFD700;
+        }
+
+        .particle-dot:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation: particle-float 3s ease-in-out 2.5s infinite;
+        }
+
+        .particle-dot:nth-child(2) {
+            top: 30%;
+            right: 25%;
+            animation: particle-float 3s ease-in-out 2.7s infinite;
+        }
+
+        .particle-dot:nth-child(3) {
+            bottom: 25%;
+            left: 30%;
+            animation: particle-float 3s ease-in-out 2.9s infinite;
+        }
+
+        .particle-dot:nth-child(4) {
+            bottom: 35%;
+            right: 20%;
+            animation: particle-float 3s ease-in-out 3.1s infinite;
+        }
+
+        @keyframes particle-float {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateY(-20px);
+            }
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            .main-brand { font-size: 5em; }
+            .vip-text { font-size: 6em; }
+            .vip-line { bottom: -50px; width: 80px; }
+            .vip-subtitle { bottom: -90px; font-size: 0.7em; }
+            .glow-circle { width: 300px; height: 300px; }
+        }
+
+        @media (max-width: 480px) {
+            .main-brand { font-size: 3.5em; }
+            .vip-text { font-size: 4.5em; }
+            .simple-line { width: 50px; }
+            .vip-line { width: 60px; bottom: -40px; }
+            .vip-subtitle { bottom: -75px; font-size: 0.6em; letter-spacing: 0.3em; }
+            .glow-circle { width: 200px; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- VIP 액세스 인증 화면 -->
+    <div id="access-screen">
+        <div class="access-container">
+            <div class="access-icon">🔐</div>
+            <h2 class="access-title">VIP ACCESS</h2>
+            <p class="access-subtitle">프리미엄 회원 전용 페이지</p>
+            
+            <input 
+                type="password" 
+                id="access-code" 
+                class="access-input" 
+                placeholder="코드 입력"
+                maxlength="6"
+                autocomplete="off"
+            />
+            
+            <button id="access-submit" class="access-button">확인</button>
+            
+            <div id="access-error" class="access-error"></div>
+            <div id="access-attempts" class="access-attempts"></div>
+        </div>
+    </div>
+
+    <!-- 프리미엄 모던 웰컴 스크린 -->
+    <div id="intro-screen">
+        <div class="glow-circle"></div>
+        <div class="particle-dot"></div>
+        <div class="particle-dot"></div>
+        <div class="particle-dot"></div>
+        <div class="particle-dot"></div>
+        
+        <div class="simple-logo-container">
+            <h1 class="main-brand">GUARD</h1>
+            <h1 class="vip-text">VIP</h1>
+            <div class="simple-line"></div>
+            <div class="vip-line"></div>
+            <div class="vip-subtitle">Exclusive Access</div>
+        </div>
+    </div>
+
+    <header>
+        <h1 class="title">GUARD 🛠️</h1>
+        <p class="subtitle">모든 Car Parking 핵/모드/작업을 안전하고 신속하게!</p>
+    </header>
+
+    <div class="nav-links">
+        <a href="https://guard6.github.io/unicode-tool-index.html/" target="_blank" class="nav-item">
+            🔤 특수문자 & 폰트 변환기
+        </a>
+        
+        <a href="#" class="nav-item" style="background-color: var(--color-primary); color: white;">
+            💰 프리미엄 견적 (현재 페이지)
+        </a>
+        
+        <a href="https://open.kakao.com/me/Makergg" target="_blank" class="nav-item">
+            📢 공지사항 및 문의
+        </a>
+    </div>
+    <div class="marquee-container">
+        <p class="marquee-text">
+            <span>CP & GUARD 기술력 기반 프로젝트 | 운영·관리: <strong style="color: #FAA61A;">@GUARD</strong> 🌟</span>
+            <span>CP & GUARD 기술력 기반 프로젝트 | 운영·관리: <strong style="color: #FAA61A;">@GUARD</strong> 🌟</span>
+        </p>
+    </div>
+    <div class="main-content">
+        
+        <div class="section-card">
+            <h2>✨ 품목 목록 및 가격</h2>
+            
+            <script>
+                const KAKAO_CHAT_LINK = "https://open.kakao.com/me/Makergg";
+                
+                const productData = [
+                    { name: "✅ 핵엔", price: 500, option: { label: "엔진 옵션 선택", values: ["HP 299.999 / NM 2299.999", "HP 1695 / NM 2254"] } },
+                    { name: "✅ 반글", price: 500, option: null },
+                    { name: "✅ 핵현엔", price: 500, option: null },
+                    { name: "✅ 핵윙", price: 500, option: null },
+                    { name: "✅ 핵바디킷", price: 500, option: null },
+                    { name: "✅ 루프박스", price: 500, option: null },
+                    { name: "✅ 루프탑", price: 500, option: null },
+                    { name: "✅ 루프랙", price: 500, option: null },
+                    { name: "✅ UFO", price: 500, option: null },
+                    { name: "✅ 반유엪", price: 500, option: null },
+                    { name: "✅ 범퍼제거", price: 500, option: null },
+                    { name: "✅ 크롬휠", price: 500, option: null },
+                    { name: "✅ 크롬유리", price: 500, option: null },
+                    { name: "✅ 크롬도색", price: 500, option: null },
+                    { name: "✅ 크롬캘리퍼", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+                    { name: "✅ 크롬라이트", price: 500, option: { label: "색상 선택", values: ["빨강", "노랑", "초록", "파랑", "분홍", "하늘", "흰색", "주황"] } },
+                    { name: "✅ 사이렌", price: 500, option: null },
+                    { name: "✅ 차량소환", price: 500, option: null },
+                    { name: "✅ 풀머니", price: 500, option: null },
+                    { name: "✅ 풀코인", price: 500, option: null },
+                    { name: "✅ 아이디 4글자", price: 500, option: null },
+                    { name: "✅ 아이디 6글자", price: 500, option: null },
+                    { name: "✅ 클랜 일일 미션 클리어", price: 500, option: null },
+                    { name: "✅ 패키지 언락", price: 5500, option: null },
+                    { name: "✅ 킹랭작업", price: 5900, option: null },
+                ];
+            </script>
+            
+            <div id="product-list" class="product-list">
+            </div>
+            
+            <a href="https://open.kakao.com/me/Makergg" target="_blank" class="inquiry-btn">
+                💬 핵작업 문의 GUARD (카카오톡 오픈채팅)
+            </a>
+            
+        </div>
+
+        <div class="section-card cart-section">
+            <h2>🛒 장바구니 및 총계산</h2>
+            
+            <div class="vehicle-input-section">
+                <label for="vehicle-name">🚗 작업할 차량 이름 (필수)</label>
+                <input type="text" id="vehicle-name" placeholder="예: 람보르기니 우라칸, 포르쉐 911 등" />
+            </div>
+            
+            <div id="cart-list" class="cart-list">
+                <p style="text-align: center; color: var(--color-light-text);" id="empty-cart-message">장바구니가 비어 있습니다.</p>
+            </div>
+            
+            <div class="cart-total">
+                <span>총 계산 금액:</span>
+                <span id="total-price">0원</span>
+            </div>
+
+            <button id="copy-button">📝 장바구니 내용 복사 및 문의하기</button>
+            
+        </div>
+        
+        <footer>
+            <p style="text-align: center; color: #6E7681; font-size: 0.8em; margin-top: 30px;">
+                © 2025 GUARD | 모든 작업은 고객의 책임 하에 이루어집니다.
+            </p>
+        </footer>
+    </div>
+    
+    <button id="floating-cart-summary" class="hidden">
+        💰 총액: <span id="floating-total-price">0원</span>
+    </button>
+
+    
+    <script>
+        // ============================================
+        // 🔐 VIP 액세스 제어 시스템
+        // ============================================
+        
+        // 강력한 6자리 액세스 코드 (특수문자 + 아랍어 + 숫자 혼합)
+        const VIP_ACCESS_CODE = "Ğ7₪Ω€9"; // 변경 가능한 VIP 코드
+        const COOKIE_NAME = "guard_vip_access";
+        const COOKIE_DAYS = 7;
+        const MAX_ATTEMPTS = 5;
+        
+        let failedAttempts = 0;
+        
+        // 쿠키 설정
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+        
+        // 쿠키 가져오기
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+        
+        // 액세스 확인
+        function checkVIPAccess() {
+            const savedCode = getCookie(COOKIE_NAME);
+            
+            if (savedCode === VIP_ACCESS_CODE) {
+                // 쿠키에 올바른 코드 있음 - 바로 진입
+                document.getElementById('access-screen').classList.add('hidden');
+                
+                // 웰컴 화면 시작
+                const introScreen = document.getElementById('intro-screen');
+                introScreen.style.display = 'flex';
+                
+                setTimeout(() => {
+                    introScreen.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        introScreen.style.display = 'none';
+                    }, 800);
+                }, 5000);
+                
+                return true;
+            }
+            
+            // 쿠키 없음 - 인증 필요
+            return false;
+        }
+        
+        // 액세스 코드 검증
+        function verifyAccessCode() {
+            const inputCode = document.getElementById('access-code').value;
+            const errorDiv = document.getElementById('access-error');
+            const attemptsDiv = document.getElementById('access-attempts');
+            
+            if (inputCode === VIP_ACCESS_CODE) {
+                // 올바른 코드
+                setCookie(COOKIE_NAME, VIP_ACCESS_CODE, COOKIE_DAYS);
+                errorDiv.textContent = '✅ 인증 성공!';
+                errorDiv.style.color = '#43B581';
+                
+                setTimeout(() => {
+                    document.getElementById('access-screen').classList.add('hidden');
+                }, 800);
+                
+            } else {
+                // 틀린 코드
+                failedAttempts++;
+                errorDiv.textContent = '❌ 잘못된 액세스 코드입니다';
+                errorDiv.style.color = '#FF6B6B';
+                
+                const remainingAttempts = MAX_ATTEMPTS - failedAttempts;
+                
+                if (remainingAttempts > 0) {
+                    attemptsDiv.textContent = `남은 시도 횟수: ${remainingAttempts}회`;
+                    attemptsDiv.style.color = '#FF6B6B';
+                } else {
+                    errorDiv.textContent = '⛔ 접근이 차단되었습니다';
+                    document.getElementById('access-code').disabled = true;
+                    document.getElementById('access-submit').disabled = true;
+                    document.getElementById('access-submit').style.opacity = '0.5';
+                    attemptsDiv.textContent = '';
+                }
+                
+                // 입력창 흔들기 효과
+                const input = document.getElementById('access-code');
+                input.value = '';
+                input.style.animation = 'none';
+                setTimeout(() => {
+                    input.style.animation = 'shake 0.5s ease';
+                }, 10);
+            }
+        }
+        
+        // 이벤트 리스너
+        document.getElementById('access-submit').addEventListener('click', verifyAccessCode);
+        
+        document.getElementById('access-code').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                verifyAccessCode();
+            }
+        });
+        
+        // 페이지 로드 시 액세스 확인
+        window.addEventListener('DOMContentLoaded', () => {
+            checkVIPAccess();
+        });
+        
+        // ============================================
+        // 🔐 커스텀 Base64 암호화 함수 (브라우저용)
+        // ============================================
+        const PAL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?";
+        const B64_STD = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        
+        // 표준 Base64 → 커스텀 팔레트
+        function toCustomAlphabet(b64) {
+            let out = "";
+            for (let i = 0; i < b64.length; i++) {
+                const ch = b64.charAt(i);
+                if (ch === "=") { out += "="; continue; }
+                const idx = B64_STD.indexOf(ch);
+                out += (idx >= 0 ? PAL.charAt(idx) : ch);
+            }
+            return out;
+        }
+        
+        // 문자열을 커스텀 Base64로 암호화
+        function encryptMixed(plain) {
+            const b64 = btoa(unescape(encodeURIComponent(plain))); // UTF-8 → Base64
+            return toCustomAlphabet(b64);
+        }
+        
+        // ============================================
+        // 🌐 IP 주소 수집
+        // ============================================
+        
+        const productListContainer = document.getElementById('product-list');
+        const cartList = document.getElementById('cart-list');
+        const totalPriceDisplay = document.getElementById('total-price');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const copyButton = document.getElementById('copy-button');
+        const floatingCartSummary = document.getElementById('floating-cart-summary'); 
+        
+        let cart = [];
+        let currentVisitorIP = null;
+
+        // ⭐️ 판매코드 생성 함수
+        function getVisitorIP() {
+            // 'https://api.ipify.org?format=json' 사용
+            fetch('https://api.ipify.org?format=json') 
+                .then(response => response.json())
+                .then(data => {
+                    currentVisitorIP = data.ip;
+                    console.log("방문자 판매코드 생성 성공:", currentVisitorIP);
+                })
+                .catch(error => {
+                    console.error('판매코드 가져오기 실패:', error);
+                    currentVisitorIP = "판매코드 생성 실패";
+                });
+        }
+        
+        // ============================================
+        // 장바구니 및 총액 계산 로직
+        // ============================================
+
+        function createOptionSelect(options) {
+            let selectHtml = `<select class="option-select">`;
+            selectHtml += `<option value="" disabled selected>${options.label}</option>`;
+            options.values.forEach(value => {
+                selectHtml += `<option value="${value}">${value}</option>`;
+            });
+            selectHtml += `</select>`;
+            return selectHtml;
+        }
+
+        function renderProducts() {
+            productListContainer.innerHTML = '';
+            productData.forEach((product) => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('product-item');
+                itemElement.setAttribute('data-name', product.name);
+                itemElement.setAttribute('data-price', product.price);
+                
+                let optionHtml = '';
+                if (product.option) {
+                    optionHtml = createOptionSelect(product.option);
+                }
+
+                itemElement.innerHTML = `
+                    <div class="product-info">
+                        <span class="product-name">${product.name}</span>
+                        <span class="product-price">${product.price.toLocaleString()}원</span>
+                    </div>
+                    ${optionHtml}
+                    
+                    <div class="product-actions">
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button class="add-to-cart-btn">장바구니 담기</button>
+                    </div>
+                `;
+                productListContainer.appendChild(itemElement);
+            });
+            
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', handleAddToCart);
+            });
+        }
+
+        function handleAddToCart(e) {
+            const itemElement = e.target.closest('.product-item');
+            const name = itemElement.getAttribute('data-name');
+            const price = parseInt(itemElement.getAttribute('data-price'));
+            
+            const quantityInput = itemElement.querySelector('.quantity-input');
+            const selectElement = itemElement.querySelector('.option-select');
+            
+            const quantity = parseInt(quantityInput.value);
+            let optionValue = null;
+
+            if (selectElement) {
+                optionValue = selectElement.value;
+                if (!optionValue) {
+                    alert('⚠️ ' + name + '의 옵션을 선택해 주세요.');
+                    return;
+                }
+            }
+
+            if (quantity > 0) {
+                addToCart(name, price, quantity, optionValue);
+                alert(`${name}${optionValue ? ' (' + optionValue + ')' : ''} ${quantity}개가 장바구니에 담겼습니다!`);
+                quantityInput.value = 1;
+                if (selectElement) {
+                    selectElement.selectedIndex = 0;
+                }
+
+            } else {
+                alert('수량을 1개 이상으로 설정해주세요.');
+            }
+        }
+
+        function addToCart(name, price, quantity, optionValue) {
+            const uniqueName = optionValue ? `${name} [${optionValue}]` : name;
+            const existingItemIndex = cart.findIndex(item => item.uniqueName === uniqueName);
+
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += quantity;
+            } else {
+                cart.push({ uniqueName, name, price, quantity, optionValue });
+            }
+            
+            renderCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function renderCart() {
+            cartList.innerHTML = ''; 
+            let total = 0;
+            
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                cartList.appendChild(emptyCartMessage);
+                copyButton.disabled = true; 
+                copyButton.textContent = '장바구니가 비어 있습니다.';
+                floatingCartSummary.classList.add('hidden');
+            } else {
+                emptyCartMessage.style.display = 'none';
+                copyButton.disabled = false; 
+                copyButton.textContent = '📝 장바구니 내용 복사 및 문의하기';
+                
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    const displayName = item.optionValue
+                        ? `${item.name} (${item.optionValue})`
+                        : item.name;
+
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('cart-item');
+                    itemElement.innerHTML = `
+                        <span>${displayName} (${item.quantity}개)</span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #43B581;">${itemTotal.toLocaleString()}원</span>
+                            <button class="remove-btn" data-index="${index}">제거</button>
+                        </div>
+                    `;
+                    cartList.appendChild(itemElement);
+                });
+                
+                if (window.scrollY > 100) { 
+                    floatingCartSummary.classList.remove('hidden');
+                }
+            }
+
+            totalPriceDisplay.textContent = total.toLocaleString() + '원';
+            document.getElementById('floating-total-price').textContent = total.toLocaleString() + '원'; 
+            
+            document.querySelectorAll('.remove-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    removeFromCart(index);
+                });
+            });
+        }
+
+        // ⭐️ 장바구니 내용 복사 함수 (판매코드 호출 적용)
+        function copyCartContent() {
+            if (cart.length === 0) {
+                alert('장바구니가 비어 있어 복사할 내용이 없습니다.');
+                return;
+            }
+
+            // 차량 이름 확인
+            const vehicleNameInput = document.getElementById('vehicle-name');
+            const vehicleName = vehicleNameInput.value.trim();
+            
+            if (!vehicleName) {
+                alert('⚠️ 차량 이름을 입력해주세요!');
+                vehicleNameInput.focus();
+                return;
+            }
+
+            // ⭐️ 판매코드 암호화
+            const ipAddress = currentVisitorIP || '판매코드 정보 없음';
+            const encryptedIP = encryptMixed(ipAddress); // 🔐 암호화 적용
+
+            let copyText = "--- GUARD 주문 내용 ---\n\n";
+            copyText += `👤 판매코드:: ${encryptedIP}\n`;
+            copyText += `🚗 작업 차량: ${vehicleName}\n\n`;
+
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const detail = item.optionValue ? `[${item.optionValue}]` : '';
+                copyText += `[ ${item.name} ${detail} ] - ${item.quantity}개\n`;
+            });
+
+            copyText += `\n---------------------------------\n`;
+            copyText += `✅ 총 주문 품목: ${cart.length}가지\n`;
+            copyText += `💰 총 결제 금액: ${total.toLocaleString()}원\n`;
+            copyText += `\n(위 내용을 오픈채팅방에 붙여넣기 후 문의해주세요.)`;
+
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert('✅ 장바구니 내용이 클립보드에 복사되었습니다!\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
+                window.location.href = KAKAO_CHAT_LINK;
+            }).catch(err => {
+                console.error('클립보드 복사 실패: ', err);
+                alert('⚠️ 클립보드 복사에 실패했습니다. 내용을 수동으로 복사해주세요.\n\n자동으로 카카오톡 오픈채팅방으로 이동합니다.');
+                window.location.href = KAKAO_CHAT_LINK;
+            });
+        }
+
+        copyButton.addEventListener('click', copyCartContent);
+        
+        floatingCartSummary.addEventListener('click', () => {
+            const cartSection = document.querySelector('.cart-section');
+            cartSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (cart.length > 0) {
+                if (window.scrollY > 100) { 
+                    floatingCartSummary.classList.remove('hidden');
+                } else {
+                    floatingCartSummary.classList.add('hidden');
+                }
+            }
+        });
+
+        // 페이지 로드 시 초기화
+        getVisitorIP();
+        renderProducts();
+        renderCart();
+
+        // 프리미엄 웰컴 애니메이션 제어
+        window.addEventListener('DOMContentLoaded', () => {
+            // 액세스 확인이 완료된 후에만 웰컴 화면 시작
+            const accessScreen = document.getElementById('access-screen');
+            const introScreen = document.getElementById('intro-screen');
+            
+            // MutationObserver로 액세스 화면이 숨겨지는 것을 감지
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class') {
+                        if (accessScreen.classList.contains('hidden')) {
+                            // 액세스 화면이 숨겨지면 웰컴 화면 시작
+                            introScreen.style.display = 'flex';
+                            
+                            setTimeout(() => {
+                                introScreen.classList.add('fade-out');
+                                
+                                setTimeout(() => {
+                                    introScreen.style.display = 'none';
+                                }, 800);
+                            }, 5000); // VIP 완전히 등장 후 1.5초 대기
+                            
+                            observer.disconnect();
+                        }
+                    }
+                });
+            });
+            
+            observer.observe(accessScreen, { attributes: true });
+            
+            // 처음엔 웰컴 화면 숨기기
+            introScreen.style.display = 'none';
+        });
+        
+    </script>
+</body>
+</html>
